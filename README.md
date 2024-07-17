@@ -1,27 +1,104 @@
-# UrlShortenerApp
+# URL Shortener App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
+A URL Shortener application built using the MEAN stack (MongoDB, Express.js, Angular, and Node.js) and styled with Tailwind CSS.
 
-## Development server
+## Table of Contents
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Production](#production)
+- [License](#license)
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Shorten URLs and store them in a MongoDB database
+- Redirect shortened URLs to the original URLs
+- Responsive and modern UI using Tailwind CSS
 
-## Build
+## Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Backend
 
-## Running unit tests
+1. Clone the repository:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    ```bash
+    git clone https://github.com/yourusername/url-shortener.git
+    cd url-shortener/backend
+    ```
 
-## Running end-to-end tests
+2. Install the backend dependencies:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+    ```bash
+    npm install
+    ```
 
-## Further help
+3. Create a `.env` file in the `backend` directory and add the following:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    ```env
+    PORT=5000
+    MONGODB_URI=mongodb://localhost:27017/urlshortener
+    ```
+
+4. Start the backend server:
+
+    ```bash
+    node index.js
+    ```
+
+### Frontend
+
+1. Navigate to the `frontend` directory:
+
+    ```bash
+    cd ../frontend
+    ```
+
+2. Install the frontend dependencies:
+
+    ```bash
+    npm install
+    ```
+
+3. Start the frontend development server:
+
+    ```bash
+    ng serve
+    ```
+
+The frontend server will run on `http://localhost:4200` and the backend server will run on `http://localhost:5000`.
+
+## Usage
+
+1. Open your browser and go to `http://localhost:4200`.
+2. Enter a URL in the input field and click the "Shorten" button.
+3. The shortened URL will be displayed. Click the shortened URL to be redirected to the original URL.
+4. Use the "Copy Link" button to copy the shortened URL to your clipboard.
+
+## Production
+
+To build and deploy the application for production:
+
+1. **Build the Frontend**
+
+    ```bash
+    cd frontend
+    ng build --prod
+    ```
+
+2. **Start the Backend**
+
+    Ensure your `.env` file contains the production MongoDB URI.
+
+    ```bash
+    cd ../backend
+    node index.js
+    ```
+
+3. **Deploy the Application**
+
+    Deploy your application using your preferred cloud provider or hosting service. Ensure the `dist/frontend` directory is correctly served by your backend.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
