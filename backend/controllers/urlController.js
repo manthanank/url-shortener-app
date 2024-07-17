@@ -1,11 +1,9 @@
 const Url = require('../models/urlModel');
-// const { nanoid } = require('nanoid');
-let { nanoid } = require("nanoid");
-let ID = nanoid();
+const { nanoid } = require('nanoid');
 
 const createShortUrl = async (req, res) => {
     const { originalUrl } = req.body;
-    const shortUrl = ID(8);
+    const shortUrl = nanoid(8);
     const newUrl = new Url({ originalUrl, shortUrl });
     await newUrl.save();
     res.json(newUrl);
