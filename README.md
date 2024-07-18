@@ -42,7 +42,7 @@ A URL Shortener application built using the MEAN stack (MongoDB, Express.js, Ang
 4. Start the backend server:
 
     ```bash
-    node --experimental-require-module --watch index.js
+    node index.js
     ```
 
 ### Frontend
