@@ -28,4 +28,24 @@ const redirectUrl = async (req, res) => {
     }
 };
 
-module.exports = { createShortUrl, redirectUrl };
+const getUrls = async (req, res) => {
+    try{
+        const urls = await Url.find({});
+        res.json(urls);
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+const deleteUrl = async (req, res) => {
+    try {
+        const { shortUrl } = req.params;
+        await Url.findOneAndDelete({ shortUrl });
+        res.json('URL deleted');
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+module.exports = { createShortUrl, redirectUrl, getUrls, deleteUrl };
