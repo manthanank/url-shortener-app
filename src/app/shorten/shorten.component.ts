@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UrlService } from '../services/url.service';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../environments/environment.development';
 import { Url } from '../models/url.model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-shorten',
@@ -16,9 +16,11 @@ export class ShortenComponent implements OnInit {
   shortUrl: string = '';
   redirectUrl = environment.apiUrl + '/';
   copyMessage: string = '';
+  copyListMessage: string = '';
   urls: Url[] = [];
   showDeleteModal = false;
   urlToDelete = '';
+  copyIndex: number = -1;
 
   constructor(private urlService: UrlService) {}
 
@@ -55,6 +57,25 @@ export class ShortenComponent implements OnInit {
       .catch((err) => {
         console.error('Failed to copy URL: ', err);
         this.copyMessage = 'Failed to copy URL';
+      });
+  }
+
+  copyListUrl(url: string, index: number) {
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        // Optional: Display a message or perform an action after successful copy
+        console.log('URL copied to clipboard!');
+        this.copyListMessage = 'Copied!';
+        this.copyIndex = index;
+        setTimeout(() => {
+          this.copyListMessage = '';
+          this.copyIndex = -1;
+        }, 2000);
+      })
+      .catch((err) => {
+        console.error('Failed to copy URL: ', err);
+        this.copyListMessage = 'Failed to copy URL';
       });
   }
 

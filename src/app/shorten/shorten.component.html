@@ -33,8 +33,11 @@
                         url.shortUrl }}</a>
                 </div>
                 <div>
+                    @if (copyIndex === $index) {
+                    <span class="text-green ml-2">{{ copyListMessage }}</span>
+                    }
                     <button class="ml-2 px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-                        (click)="copyUrl(redirectUrl + url.shortUrl)">Copy</button>
+                        (click)="copyListUrl(redirectUrl + url.shortUrl, $index)">Copy</button>
                     <button class="ml-2 px-2 py-1 bg-red-200 text-red-800 rounded hover:bg-red-300"
                         (click)="prepareDelete(url.shortUrl)">Delete</button>
                 </div>
