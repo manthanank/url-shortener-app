@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UrlService } from '../services/url.service';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Url } from '../models/url.model';
 import { environment } from '../../environments/environment';
 import { DatePipe } from '@angular/common';
@@ -8,12 +13,11 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-shorten',
   standalone: true,
-  imports: [FormsModule, DatePipe],
+  imports: [DatePipe, ReactiveFormsModule],
   templateUrl: './shorten.component.html',
   styleUrl: './shorten.component.scss',
 })
 export class ShortenComponent implements OnInit {
-  originalUrl: string = '';
   shortUrl: string = '';
   redirectUrl = environment.apiUrl + '/';
   copyMessage: string = '';
@@ -25,25 +29,52 @@ export class ShortenComponent implements OnInit {
   copyIndex: number = -1;
   selectedUrl: Url = {} as Url;
   isLoading = false;
+  isloding = false;
+  error: string = '';
+  errorMsg: string = '';
+  urlForm: FormGroup = new FormGroup({});
 
   constructor(private urlService: UrlService) {}
 
   ngOnInit() {
+    this.urlForm = new FormGroup({
+      originalUrl: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^(http|https)://.*$'),
+      ]),
+    });
     this.getAllUrls();
   }
 
   shortenUrl() {
-    this.urlService.shortenUrl(this.originalUrl).subscribe((response) => {
-      this.shortUrl = response.shortUrl;
-      // console.log('Shortened URL: ', this.shortUrl);
-      this.getAllUrls();
-    });
+    if (this.urlForm.valid) {
+      this.urlService.shortenUrl(this.urlForm.value.originalUrl).subscribe({
+        next: (response) => {
+          // console.log('Shortened URL: ', response);
+          this.shortUrl = response.shortUrl;
+          this.getAllUrls();
+        },
+        error: (error) => {
+          console.error('Error shortening URL: ', error);
+          this.errorMsg = error?.error?.message || 'An error occurred!';
+        },
+      });
+    }
   }
 
   getAllUrls() {
-    this.urlService.getAllUrls().subscribe((response) => {
-      // console.log('All URLs: ', response);
-      this.urls = response;
+    this.isloding = true;
+    this.urlService.getAllUrls().subscribe({
+      next: (response) => {
+        // console.log('All URLs: ', response);
+        this.urls = response;
+        this.isloding = false;
+      },
+      error: (error) => {
+        console.error('Error getting all URLs: ', error);
+        this.isloding = false;
+        this.error = error?.error?.message || 'An error occurred!';
+      },
     });
   }
 
@@ -54,10 +85,16 @@ export class ShortenComponent implements OnInit {
 
   getDetails(id: string) {
     this.isLoading = true;
-    this.urlService.getDetails(id).subscribe((response) => {
-      // console.log('URL Details: ', response);
-      this.selectedUrl = response;
-      this.isLoading = false;
+    this.urlService.getDetails(id).subscribe({
+      next: (response) => {
+        // console.log('URL Details: ', response);
+        this.selectedUrl = response;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error getting URL details: ', error);
+        this.error = error?.error?.message || 'An error occurred!';
+      },
     });
   }
 
@@ -110,9 +147,15 @@ export class ShortenComponent implements OnInit {
   }
 
   deleteUrl(id: string) {
-    this.urlService.deleteUrl(id).subscribe((response) => {
-      // console.log('Deleted URL: ', response);
-      this.getAllUrls();
+    this.urlService.deleteUrl(id).subscribe({
+      next: (response) => {
+        // console.log('Deleted URL: ', response);
+        this.getAllUrls();
+      },
+      error: (error) => {
+        console.error('Error deleting URL: ', error);
+        this.error = error?.error?.message || 'An error occurred!';
+      },
     });
   }
 }

@@ -13,6 +13,18 @@ function generateUniqueId(length) {
 const createShortUrl = async (req, res) => {
     const { originalUrl } = req.body;
     const shortUrl = generateUniqueId(5);
+    // check if originalUrl is valid url
+    const urlRegex = new RegExp(/^(http|https):\/\/[^ "]+$/);
+    if (!urlRegex.test(originalUrl))
+        return res.status(400).json('Invalid URL');
+    // check if originalUrl already exists in database
+    const url = await Url.findOne({
+        originalUrl
+    });
+    if (url) {
+        res.json(url);
+        return
+    }
     // Set expiration date to 7 days from now
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 7);
