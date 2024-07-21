@@ -31,16 +31,14 @@
                     URL:
                     <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + url.shortUrl" target="_blank">{{
                         url.shortUrl }}</a>
-                    Clicks: <span class="text-green-500">{{ url.clicks }}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    @if (copyIndex === $index) {
-                    <span class="text-green ml-2">{{ copyListMessage }}</span>
-                    }
                     <button class="px-2 py-1 bg-blue-200 text-blue-800 rounded hover:bg-blue-300"
                         (click)="showDetails(url.shortUrl)">Details</button>
                     <button class="ml-2 px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-                        (click)="copyListUrl(redirectUrl + url.shortUrl, $index)">Copy</button>
+                        (click)="copyListUrl(redirectUrl + url.shortUrl, $index)">{{
+                        copyIndex === $index ? 'Copied' : 'Copy'
+                        }}</button>
                     <button class="ml-2 px-2 py-1 bg-red-200 text-red-800 rounded hover:bg-red-300"
                         (click)="prepareDelete(url.shortUrl)">Delete</button>
                 </div>
