@@ -95,6 +95,12 @@ To build and deploy the application for production:
 
     Deploy your application using your preferred cloud provider or hosting service. Ensure the `dist/url-shortener-app` directory is correctly served by your backend.
 
+Preview: [URL Shortener App](https://url-shortener-app-manthanank.vercel.app/)
+
+Screenshot:
+
+![URL Shortener App](/public/image.png)
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
