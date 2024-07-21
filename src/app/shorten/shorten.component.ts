@@ -29,7 +29,7 @@ export class ShortenComponent implements OnInit {
   copyIndex: number = -1;
   selectedUrl: Url = {} as Url;
   isLoading = false;
-  isloding = false;
+  isloading = false;
   error: string = '';
   errorMsg: string = '';
   urlForm: FormGroup = new FormGroup({});
@@ -63,16 +63,16 @@ export class ShortenComponent implements OnInit {
   }
 
   getAllUrls() {
-    this.isloding = true;
+    this.isloading = true;
     this.urlService.getAllUrls().subscribe({
       next: (response) => {
         // console.log('All URLs: ', response);
         this.urls = response;
-        this.isloding = false;
+        this.isloading = false;
       },
       error: (error) => {
         console.error('Error getting all URLs: ', error);
-        this.isloding = false;
+        this.isloading = false;
         this.error = error?.error?.message || 'An error occurred!';
       },
     });
