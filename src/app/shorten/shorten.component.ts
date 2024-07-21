@@ -3,11 +3,12 @@ import { UrlService } from '../services/url.service';
 import { FormsModule } from '@angular/forms';
 import { Url } from '../models/url.model';
 import { environment } from '../../environments/environment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-shorten',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './shorten.component.html',
   styleUrl: './shorten.component.scss',
 })
@@ -19,8 +20,10 @@ export class ShortenComponent implements OnInit {
   copyListMessage: string = '';
   urls: Url[] = [];
   showDeleteModal = false;
+  showDetailsModal = false;
   urlToDelete = '';
   copyIndex: number = -1;
+  selectedUrl: Url = {} as Url;
 
   constructor(private urlService: UrlService) {}
 
@@ -40,6 +43,18 @@ export class ShortenComponent implements OnInit {
     this.urlService.getAllUrls().subscribe((response) => {
       // console.log('All URLs: ', response);
       this.urls = response;
+    });
+  }
+
+  showDetails(id: string) {
+    this.showDetailsModal = true;
+    this.getDetails(id);
+  }
+
+  getDetails(id: string) {
+    this.urlService.getDetails(id).subscribe((response) => {
+      // console.log('URL Details: ', response);
+      this.selectedUrl = response;
     });
   }
 
@@ -85,8 +100,6 @@ export class ShortenComponent implements OnInit {
   }
 
   confirmDelete() {
-    // Perform the deletion logic here using this.urlToDelete
-    console.log(`Deleting URL: ${this.urlToDelete}`);
     // Close the modal
     this.showDeleteModal = false;
     // Delete the URL

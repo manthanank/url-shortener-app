@@ -31,11 +31,14 @@
                     URL:
                     <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + url.shortUrl" target="_blank">{{
                         url.shortUrl }}</a>
+                    Clicks: <span class="text-green-500">{{ url.clicks }}</span>
                 </div>
                 <div>
                     @if (copyIndex === $index) {
                     <span class="text-green ml-2">{{ copyListMessage }}</span>
                     }
+                    <button class="px-2 py-1 bg-blue-200 text-blue-800 rounded hover:bg-blue-300"
+                        (click)="showDetails(url.shortUrl)">Details</button>
                     <button class="ml-2 px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
                         (click)="copyListUrl(redirectUrl + url.shortUrl, $index)">Copy</button>
                     <button class="ml-2 px-2 py-1 bg-red-200 text-red-800 rounded hover:bg-red-300"
@@ -64,6 +67,23 @@
             Delete</button>
         <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2"
             (click)="showDeleteModal = false">Cancel</button>
+    </div>
+</div>
+}
+
+@if (showDetailsModal) {
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-4 rounded shadow-lg">
+        <h3 class="text-xl font-bold mb-2">URL Details</h3>
+        <p class="mb-4">Short URL: <a class="text-blue-500 hover:text-blue-600"
+                [href]="redirectUrl + selectedUrl.shortUrl" target="_blank">{{ selectedUrl.shortUrl }}</a></p>
+        <p class="mb-4">Original URL: <a class="text-blue-500 hover:text-blue-600" [href]="selectedUrl.originalUrl"
+                target="_blank">{{ selectedUrl.originalUrl }}</a></p>
+        <p class="mb-4">Clicks: <span class="text-green-500">{{ selectedUrl.clicks }}</span></p>
+        <p class="mb-4">Created At: {{ selectedUrl.createdAt | date: 'medium' }}</p>
+        <p class="mb-4">Expires At: {{ selectedUrl.expirationDate | date: 'medium' }}</p>
+        <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+            (click)="showDetailsModal = false">Close</button>
     </div>
 </div>
 }

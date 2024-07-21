@@ -20,6 +20,10 @@ export class UrlService {
     return this.http.get<Urls>(`${this.apiUrl}/urls`);
   }
 
+  getDetails(id: string): Observable<Url> {
+    return this.http.get<Url>(`${this.apiUrl}/details/${id}`);
+  }
+
   deleteUrl(id: string): Observable<Url> {
     return this.http.delete<Url>(`${this.apiUrl}/delete/${id}`);
   }
