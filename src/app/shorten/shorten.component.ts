@@ -24,6 +24,7 @@ export class ShortenComponent implements OnInit {
   urlToDelete = '';
   copyIndex: number = -1;
   selectedUrl: Url = {} as Url;
+  isLoading = false;
 
   constructor(private urlService: UrlService) {}
 
@@ -52,9 +53,11 @@ export class ShortenComponent implements OnInit {
   }
 
   getDetails(id: string) {
+    this.isLoading = true;
     this.urlService.getDetails(id).subscribe((response) => {
       // console.log('URL Details: ', response);
       this.selectedUrl = response;
+      this.isLoading = false;
     });
   }
 
