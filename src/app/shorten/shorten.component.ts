@@ -9,6 +9,7 @@ import {
 import { Url } from '../models/url.model';
 import { environment } from '../../environments/environment';
 import { DatePipe } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-shorten',
@@ -33,6 +34,7 @@ export class ShortenComponent implements OnInit {
   error: string = '';
   errorMsg: string = '';
   urlForm: FormGroup = new FormGroup({});
+  private unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(private urlService: UrlService) {}
 
@@ -48,7 +50,7 @@ export class ShortenComponent implements OnInit {
 
   shortenUrl() {
     if (this.urlForm.valid) {
-      this.urlService.shortenUrl(this.urlForm.value.originalUrl).subscribe({
+      this.urlService.shortenUrl(this.urlForm.value.originalUrl).pipe(takeUntil(this.unsubscribe$)).subscribe({
         next: (response) => {
           // console.log('Shortened URL: ', response);
           this.shortUrl = response.shortUrl;
@@ -64,7 +66,7 @@ export class ShortenComponent implements OnInit {
 
   getAllUrls() {
     this.isloading = true;
-    this.urlService.getAllUrls().subscribe({
+    this.urlService.getAllUrls().pipe(takeUntil(this.unsubscribe$)).subscribe({
       next: (response) => {
         // console.log('All URLs: ', response);
         this.urls = response;
@@ -157,5 +159,10 @@ export class ShortenComponent implements OnInit {
         this.error = error?.error?.message || 'An error occurred!';
       },
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
