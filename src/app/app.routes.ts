@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { ShortenComponent } from './shorten/shorten.component';
 
 export const routes: Routes = [
   {

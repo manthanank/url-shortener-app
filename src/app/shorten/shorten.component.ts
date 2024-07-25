@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UrlService } from '../services/url.service';
 import {
   FormControl,
@@ -36,7 +36,7 @@ export class ShortenComponent implements OnInit {
   urlForm: FormGroup = new FormGroup({});
   private unsubscribe$: Subject<void> = new Subject<void>();
 
-  constructor(private urlService: UrlService) {}
+  urlService = inject(UrlService);
 
   ngOnInit() {
     this.urlForm = new FormGroup({
