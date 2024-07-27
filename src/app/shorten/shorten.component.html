@@ -20,19 +20,19 @@
         </div>
         }
     </form>
-    @if (errorMsg) {
+    @if (errorMsg()) {
     <div class="p-4 bg-red-100 rounded mt-4">
-        <p class="text-red-500">{{ errorMsg }}</p>
+        <p class="text-red-500">{{ errorMsg() }}</p>
     </div>
     }
-    @if (shortUrl) {
+    @if (shortUrl()) {
     <div class="p-4 bg-green-100 rounded">
-        <p>Shortened URL: <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + shortUrl"
-                target="_blank" (click)="refreshData()">{{ shortUrl }}</a>
+        <p>Shortened URL: <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + shortUrl()"
+                target="_blank" (click)="refreshData()">{{ shortUrl() }}</a>
             <button class="ml-2 px-2 py-1 bg-gray-200 text-gray-800 border border-slate-950 rounded hover:bg-gray-300"
-                (click)="copyUrl(redirectUrl + shortUrl)">Copy</button>
-            @if (copyMessage) {
-            <span class="text-green ml-2">{{ copyMessage }}</span>
+                (click)="copyUrl(redirectUrl + shortUrl())">Copy</button>
+            @if (copyMessage()) {
+            <span class="text-green ml-2">{{ copyMessage() }}</span>
             }
         </p>
     </div>
@@ -41,24 +41,24 @@
 
 <div class="max-w-md mx-auto mt-4 p-2">
     <h2 class="text-2xl font-bold mb-4">All URLs</h2>
-    @if (isloading) {
+    @if (isloading()) {
     <div class="max-w-md mx-auto p-4 shadow-lg rounded-lg">
         <div class="text-center p-4">
             Loading...
         </div>
     </div>
     }
-    @else if (error) {
+    @else if (error()) {
     <div class="max-w-md mx-auto p-4 shadow-lg rounded-lg">
         <div class="text-center p-4">
-            <p class="text-red-500">{{ error }}</p>
+            <p class="text-red-500">{{ error() }}</p>
         </div>
     </div>
     }
     @else {
-    @if (urls.length > 0 && !isloading && !error) {
+    @if (urls().length > 0 && !isloading() && !error()) {
     <ul>
-        @for (url of urls; track $index) {
+        @for (url of urls(); track $index) {
         <li class="p-2 border border-gray-300 rounded mb-2">
             <div class="flex justify-between items-center">
                 <div>
@@ -71,7 +71,7 @@
                         (click)="showDetails(url.shortUrl)">Details</button>
                     <button class="ml-2 px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
                         (click)="copyListUrl(redirectUrl + url.shortUrl, $index)">{{
-                        copyIndex === $index ? 'Copied' : 'Copy'
+                        copyIndex() === $index ? 'Copied' : 'Copy'
                         }}</button>
                     <button class="ml-2 px-2 py-1 bg-red-200 text-red-800 rounded hover:bg-red-300"
                         (click)="prepareDelete(url.shortUrl)">Delete</button>
@@ -91,7 +91,7 @@
     }
 </div>
 
-@if (showDeleteModal) {
+@if (showDeleteModal()) {
 <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
     <div class="bg-white p-4 rounded shadow-lg">
         <h3 class="text-xl font-bold mb-2">Confirm Deletion</h3>
@@ -99,28 +99,28 @@
         <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" (click)="confirmDelete()">Yes,
             Delete</button>
         <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2"
-            (click)="showDeleteModal = false">Cancel</button>
+            (click)="showDeleteModal.set(false)">Cancel</button>
     </div>
 </div>
 }
 
-@if (showDetailsModal) {
+@if (showDetailsModal()) {
 <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
     <div class="bg-white p-4 rounded shadow-lg">
         <h3 class="text-xl font-bold mb-2">URL Details</h3>
-        @if (isLoading) {
+        @if (isLoading()) {
         <p class="mb-4">Loading...</p>
         }
         @else {
         <p class="mb-4">Short URL: <a class="text-blue-500 hover:text-blue-600"
-                [href]="redirectUrl + selectedUrl.shortUrl" target="_blank">{{ selectedUrl.shortUrl }}</a></p>
-        <p class="mb-4">Original URL: <a class="text-blue-500 hover:text-blue-600" [href]="selectedUrl.originalUrl"
-                target="_blank">{{ selectedUrl.originalUrl }}</a></p>
-        <p class="mb-4">Clicks: <span class="text-green-500">{{ selectedUrl.clicks }}</span></p>
-        <p class="mb-4">Created At: {{ selectedUrl.createdAt | date: 'medium' }}</p>
-        <p class="mb-4">Expires At: {{ selectedUrl.expirationDate | date: 'medium' }}</p>
+                [href]="redirectUrl + selectedUrl().shortUrl" target="_blank">{{ selectedUrl().shortUrl }}</a></p>
+        <p class="mb-4">Original URL: <a class="text-blue-500 hover:text-blue-600" [href]="selectedUrl().originalUrl"
+                target="_blank">{{ selectedUrl().originalUrl }}</a></p>
+        <p class="mb-4">Clicks: <span class="text-green-500">{{ selectedUrl().clicks }}</span></p>
+        <p class="mb-4">Created At: {{ selectedUrl().createdAt | date: 'medium' }}</p>
+        <p class="mb-4">Expires At: {{ selectedUrl().expirationDate | date: 'medium' }}</p>
         <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
-            (click)="showDetailsModal = false">Close</button>
+            (click)="showDetailsModal.set(false)">Close</button>
         }
     </div>
 </div>
