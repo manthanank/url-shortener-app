@@ -68,10 +68,6 @@ export class ShortenComponent implements OnInit {
     this.getAllUrls();
   }
 
-  refreshClickedData(id: string) {
-    this.getDetails(id);
-  }
-
   getAllUrls() {
     this.isloading = true;
     this.urlService.getAllUrls().pipe(takeUntil(this.unsubscribe$)).subscribe({
