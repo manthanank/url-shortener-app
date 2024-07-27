@@ -28,7 +28,7 @@
     @if (shortUrl) {
     <div class="p-4 bg-green-100 rounded">
         <p>Shortened URL: <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + shortUrl"
-                target="_blank">{{ shortUrl }}</a>
+                target="_blank" (click)="refreshData()">{{ shortUrl }}</a>
             <button class="ml-2 px-2 py-1 bg-gray-200 text-gray-800 border border-slate-950 rounded hover:bg-gray-300"
                 (click)="copyUrl(redirectUrl + shortUrl)">Copy</button>
             @if (copyMessage) {
@@ -63,7 +63,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     URL:
-                    <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + url.shortUrl" target="_blank">{{
+                    <a class="text-blue-500 hover:text-blue-600" [href]="redirectUrl + url.shortUrl" target="_blank" (click)="refreshData()">{{
                         url.shortUrl }}</a>
                 </div>
                 <div class="flex justify-between items-center">
@@ -113,7 +113,7 @@
         }
         @else {
         <p class="mb-4">Short URL: <a class="text-blue-500 hover:text-blue-600"
-                [href]="redirectUrl + selectedUrl.shortUrl" target="_blank">{{ selectedUrl.shortUrl }}</a></p>
+                [href]="redirectUrl + selectedUrl.shortUrl" target="_blank" (click)="refreshData()">{{ selectedUrl.shortUrl }}</a></p>
         <p class="mb-4">Original URL: <a class="text-blue-500 hover:text-blue-600" [href]="selectedUrl.originalUrl"
                 target="_blank">{{ selectedUrl.originalUrl }}</a></p>
         <p class="mb-4">Clicks: <span class="text-green-500">{{ selectedUrl.clicks }}</span></p>
