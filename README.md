@@ -15,6 +15,7 @@ A URL Shortener application built using the MEAN stack (MongoDB, Express.js, Ang
 - Shorten URLs and store them in a MongoDB database
 - Redirect shortened URLs to the original URLs
 - Responsive and modern UI using Tailwind CSS
+- Dark mode support using Tailwind CSS
 - Copy shortened URLs to the clipboard
 - Expire shortened URLs after a specified duration
 - Click statistics for shortened URLs
