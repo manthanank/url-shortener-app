@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Url, Urls } from '../models/url.model';
 import { environment } from '../../environments/environment';
@@ -9,8 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class UrlService {
   private apiUrl = environment.apiUrl;
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   shortenUrl(originalUrl: string): Observable<Url> {
     return this.http.post<Url>(`${this.apiUrl}/shorten`, { originalUrl });

@@ -1,4 +1,4 @@
-<div class="max-w-2xl mx-auto p-6 shadow-lg rounded-lg mt-6 bg-white dark:bg-gray-800 dark:text-white">
+<div class="max-w-2xl mx-auto p-6 shadow-lg rounded-lg mt-6 bg-white dark:bg-gray-700 dark:text-white">
     <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Shorten URL</h2>
     <form [formGroup]="urlForm" (ngSubmit)="shortenUrl()" class="space-y-4">
         <div class="flex items-center space-x-4">
@@ -7,7 +7,7 @@
                 formControlName="originalUrl" placeholder="Enter your URL" required />
             <button
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-                type="submit">
+                type="submit" [disabled]="urlForm.invalid" [ngClass]="{ 'cursor-not-allowed': urlForm.invalid }">
                 Shorten
             </button>
         </div>
@@ -43,7 +43,7 @@
     }
 </div>
 
-<div class="max-w-2xl mx-auto mt-6 mb-6 p-6 bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-lg">
+<div class="max-w-2xl mx-auto mt-6 mb-6 p-6 bg-white dark:bg-gray-700 dark:text-white rounded-lg shadow-lg">
     <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">URL List</h2>
     @if (isloading()) {
     <div class="text-center p-4">

@@ -4,7 +4,7 @@
     </div>
     <div>
         <button (click)="toggleTheme()" class="bg-gray-700 p-4 rounded dark:text-white">
-            <i [ngClass]="currentTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon'"></i>
+            <i [ngClass]="currentTheme() === 'light' ? 'fas fa-sun' : 'fas fa-moon'"></i>
         </button>
     </div>
 </nav>

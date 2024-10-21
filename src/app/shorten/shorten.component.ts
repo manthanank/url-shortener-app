@@ -8,13 +8,13 @@ import {
 } from '@angular/forms';
 import { Url } from '../models/url.model';
 import { environment } from '../../environments/environment';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-shorten',
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule],
+  imports: [DatePipe, ReactiveFormsModule, NgClass],
   templateUrl: './shorten.component.html',
   styleUrl: './shorten.component.scss',
 })

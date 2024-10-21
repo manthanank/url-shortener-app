@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -8,15 +8,14 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [NgClass, RouterLink],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  currentTheme: string = localStorage.getItem('theme') || 'light';
-
-  constructor(private themeService: ThemeService) {}
+  private themeService = inject(ThemeService);
+  currentTheme = signal(localStorage.getItem('theme') || 'light');
 
   toggleTheme() {
     this.themeService.toggleTheme();
-    this.currentTheme = localStorage.getItem('theme') || 'light';
+    this.currentTheme.set(localStorage.getItem('theme') || 'light');
   }
 }
