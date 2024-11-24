@@ -5,10 +5,9 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   imports: [NgClass, RouterLink],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
   private themeService = inject(ThemeService);

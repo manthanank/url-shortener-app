@@ -13,7 +13,6 @@ import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-shorten',
-  standalone: true,
   imports: [DatePipe, ReactiveFormsModule, NgClass],
   templateUrl: './shorten.component.html',
   styleUrl: './shorten.component.scss',
