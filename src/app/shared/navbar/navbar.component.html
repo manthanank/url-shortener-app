@@ -1,16 +1,19 @@
-<nav class="relative flex justify-between items-center p-4 bg-gray-800 text-white shadow-lg">
+<nav
+  class="relative flex justify-between items-center p-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
   <div class="flex items-center space-x-8">
     <div class="text-2xl font-bold">
-      <a routerLink="/" class="hover:text-blue-400 transition-colors">URL Shortener</a>
+      <a routerLink="/" class="hover:text-blue-500 dark:hover:text-blue-400 transition-colors">URL Shortener</a>
     </div>
     <div class="hidden md:flex space-x-6">
-      <a routerLink="/" routerLinkActive="text-blue-400 border-b-2 border-blue-400"
+      <a routerLink="/"
+        routerLinkActive="text-blue-500 dark:text-blue-400 border-b-2 border-blue-500 dark:border-blue-400"
         [routerLinkActiveOptions]="{exact: true}"
-        class="px-3 py-2 hover:text-blue-400 transition-colors border-b-2 border-transparent">
+        class="px-3 py-2 hover:text-blue-500 dark:hover:text-blue-400 transition-colors border-b-2 border-transparent">
         Home
       </a>
-      <a routerLink="/analytics" routerLinkActive="text-blue-400 border-b-2 border-blue-400"
-        class="px-3 py-2 hover:text-blue-400 transition-colors border-b-2 border-transparent">
+      <a routerLink="/analytics"
+        routerLinkActive="text-blue-500 dark:text-blue-400 border-b-2 border-blue-500 dark:border-blue-400"
+        class="px-3 py-2 hover:text-blue-500 dark:hover:text-blue-400 transition-colors border-b-2 border-transparent">
         Analytics
       </a>
     </div>
@@ -18,29 +21,45 @@
 
   <div class="flex items-center space-x-4">
     <!-- Mobile menu button -->
-    <button (click)="toggleMobileMenu()" class="md:hidden p-2 rounded hover:bg-gray-700 transition-colors">
+    <button (click)="toggleMobileMenu()"
+      class="md:hidden p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
       </svg>
     </button>
 
     <!-- Theme toggle -->
-    <button (click)="toggleTheme()" class="p-2 rounded hover:bg-gray-700 transition-colors"
+    <button (click)="toggleTheme()"
+      class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300"
       [title]="currentTheme() === 'light' ? 'Switch to dark mode' : 'Switch to light mode'">
-      <i [ngClass]="currentTheme() === 'light' ? 'fas fa-sun' : 'fas fa-moon'"></i>
+      @if (currentTheme() === 'light') {
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd"
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+          clip-rule="evenodd"></path>
+      </svg>
+      }
+      @if (currentTheme() === 'dark') {
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+      </svg>
+      }
     </button>
   </div>
 
   <!-- Mobile menu -->
   @if (showMobileMenu()) {
-  <div class="absolute top-full left-0 right-0 bg-gray-800 md:hidden shadow-lg z-50">
+  <div
+    class="absolute top-full left-0 right-0 bg-white dark:bg-gray-800 md:hidden shadow-lg z-50 border-b border-gray-200 dark:border-gray-700">
     <div class="px-4 py-2 space-y-2">
-      <a routerLink="/" routerLinkActive="text-blue-400" [routerLinkActiveOptions]="{exact: true}"
-        class="block px-3 py-2 hover:text-blue-400 transition-colors" (click)="closeMobileMenu()">
+      <a routerLink="/" routerLinkActive="text-blue-500 dark:text-blue-400" [routerLinkActiveOptions]="{exact: true}"
+        class="block px-3 py-2 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+        (click)="closeMobileMenu()">
         Home
       </a>
-      <a routerLink="/analytics" routerLinkActive="text-blue-400"
-        class="block px-3 py-2 hover:text-blue-400 transition-colors" (click)="closeMobileMenu()">
+      <a routerLink="/analytics" routerLinkActive="text-blue-500 dark:text-blue-400"
+        class="block px-3 py-2 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+        (click)="closeMobileMenu()">
         Analytics
       </a>
     </div>

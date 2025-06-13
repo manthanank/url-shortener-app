@@ -1,11 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
-import { NgClass } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NgClass, RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
@@ -14,9 +13,19 @@ export class NavbarComponent {
   currentTheme = signal(localStorage.getItem('theme') || 'light');
   showMobileMenu = signal(false);
 
+  constructor() {
+    // Listen for theme changes and update the signal
+    this.updateTheme();
+  }
+
+  private updateTheme() {
+    const theme = localStorage.getItem('theme') || 'light';
+    this.currentTheme.set(theme);
+  }
+
   toggleTheme() {
     this.themeService.toggleTheme();
-    this.currentTheme.set(localStorage.getItem('theme') || 'light');
+    this.updateTheme();
   }
 
   toggleMobileMenu() {
