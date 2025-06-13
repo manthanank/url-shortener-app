@@ -18,7 +18,17 @@ const config = {
 
     url: {
         shortUrlLength: parseInt(process.env.SHORT_URL_LENGTH) || 6,
-        defaultExpirationDays: parseInt(process.env.DEFAULT_EXPIRATION_DAYS) || 7
+        defaultExpirationDays: parseInt(process.env.DEFAULT_EXPIRATION_DAYS) || 7,
+        // Base URL for generating short URLs
+        baseUrl: process.env.BASE_URL || (process.env.NODE_ENV === 'production'
+            ? 'https://url-shortener-app-nrnh.vercel.app'
+            : 'http://localhost:3000')
+    },
+
+    frontend: {
+        url: process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production'
+            ? 'https://shortener-url-app.vercel.app'
+            : 'http://localhost:4200')
     }
 };
 
@@ -28,7 +38,11 @@ const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
 if (missingEnvVars.length > 0) {
     console.error('❌ Missing required environment variables:', missingEnvVars.join(', '));
-    process.exit(1);
+    if (config.nodeEnv === 'production') {
+        process.exit(1);
+    } else {
+        console.warn('⚠️  Continuing in development mode without database connection');
+    }
 }
 
 module.exports = config;

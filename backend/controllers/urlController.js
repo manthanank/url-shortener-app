@@ -1,7 +1,7 @@
 const Url = require('../models/urlModel');
 const UrlService = require('../services/urlService');
 const { ApiResponse, AppError } = require('../utils/response');
-const { isExpired } = require('../utils/urlUtils');
+const { isExpired, generateShortUrl } = require('../utils/urlUtils');
 const { HTTP_STATUS, ERROR_MESSAGES, SUCCESS_MESSAGES } = require('../constants');
 
 /**
@@ -16,10 +16,16 @@ const createShortUrl = async (req, res, next) => {
 
         const { url, isNew } = await UrlService.findOrCreateUrl(originalUrl, customShortUrl);
 
+        // Add complete short URL to response
+        const responseData = {
+            ...url.toJSON(),
+            fullShortUrl: generateShortUrl(url.shortUrl)
+        };
+
         const message = isNew ? SUCCESS_MESSAGES.URL_CREATED : 'URL already exists';
         const statusCode = isNew ? HTTP_STATUS.CREATED : HTTP_STATUS.OK;
 
-        ApiResponse.success(message, url, statusCode).send(res);
+        ApiResponse.success(message, responseData, statusCode).send(res);
 
     } catch (error) {
         next(error);

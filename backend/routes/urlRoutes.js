@@ -1,7 +1,6 @@
 const express = require('express');
 const {
     createShortUrl,
-    redirectUrl,
     getUrls,
     getDetails,
     deleteUrl,
@@ -293,40 +292,5 @@ router.get('/analytics/:shortUrl', validateShortUrl, getAnalytics);
  *         $ref: '#/components/responses/InternalServerError'
  */
 router.delete('/delete/:shortUrl', validateShortUrl, deleteUrl);
-
-/**
- * @swagger
- * /api/{shortUrl}:
- *   get:
- *     summary: Redirect to original URL
- *     description: Redirect to the original URL and increment click counter
- *     tags: [URL Management]
- *     parameters:
- *       - in: path
- *         name: shortUrl
- *         required: true
- *         schema:
- *           type: string
- *           minLength: 3
- *         description: The short URL identifier
- *         example: abc123
- *     responses:
- *       302:
- *         description: Successful redirect to original URL
- *         headers:
- *           Location:
- *             description: The original URL
- *             schema:
- *               type: string
- *               format: uri
- *       400:
- *         $ref: '#/components/responses/BadRequest'
- *       404:
- *         $ref: '#/components/responses/NotFound'
- *       500:
- *         $ref: '#/components/responses/InternalServerError'
- */
-// Redirect route (should be last to avoid conflicts)
-router.get('/:shortUrl', validateShortUrl, redirectUrl);
 
 module.exports = router;

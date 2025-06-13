@@ -4,6 +4,7 @@ export interface Url {
   id: string
   originalUrl: string
   shortUrl: string
+  fullShortUrl?: string  // Complete short URL for display
   clicks: number
   isActive: boolean
   expirationDate: string

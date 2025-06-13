@@ -2,6 +2,15 @@ const crypto = require('crypto');
 const config = require('../config/environment');
 
 /**
+ * Generate the full short URL
+ * @param {string} shortCode - The short URL code
+ * @returns {string} - Complete short URL
+ */
+const generateShortUrl = (shortCode) => {
+    return `${config.url.baseUrl}/${shortCode}`;
+};
+
+/**
  * Generate a unique short URL identifier
  * @param {number} length - Length of the generated string
  * @returns {string} - Random string
@@ -83,6 +92,7 @@ const sanitizeUrl = (url) => {
 };
 
 module.exports = {
+    generateShortUrl,
     generateUniqueId,
     generateSecureId,
     calculateExpirationDate,

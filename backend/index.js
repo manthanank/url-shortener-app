@@ -71,9 +71,15 @@ app.get('/health', (req, res) => {
     });
 });
 
-// API routes
+// API routes (non-redirect endpoints)
 app.use('/api', urlRoutes);
 app.use('/admin', adminRoutes);
+
+// Direct redirect routes (should be after API routes to avoid conflicts)
+// Import redirect handler separately
+const { redirectUrl } = require('./controllers/urlController');
+const { validateShortUrl } = require('./middleware/validation');
+const { generalLimiter } = require('./middleware/security');
 
 // Handle favicon and common static files
 app.get('/favicon.ico', (req, res) => res.status(204).end());
@@ -132,6 +138,43 @@ app.get('/manifest.json', (req, res) => {
         message: 'Manifest not available'
     });
 });
+
+/**
+ * @swagger
+ * /{shortUrl}:
+ *   get:
+ *     summary: Redirect to original URL
+ *     description: Redirect to the original URL using the short URL code
+ *     tags: [URL Redirection]
+ *     parameters:
+ *       - in: path
+ *         name: shortUrl
+ *         required: true
+ *         schema:
+ *           type: string
+ *           pattern: '^[a-zA-Z0-9]+$'
+ *           minLength: 3
+ *           maxLength: 20
+ *         description: The short URL code
+ *         example: tdwMQL
+ *     responses:
+ *       302:
+ *         description: Redirect to original URL
+ *         headers:
+ *           Location:
+ *             description: The original URL to redirect to
+ *             schema:
+ *               type: string
+ *               format: uri
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+// Direct redirect route (should be last to avoid conflicts with other routes)
+app.get('/:shortUrl([a-zA-Z0-9]{3,20})', generalLimiter, validateShortUrl, redirectUrl);
 
 // Handle 404 for unknown routes
 app.use(notFound);

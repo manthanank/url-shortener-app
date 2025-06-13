@@ -7,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Url, UrlsResponse, CreateUrlRequest } from '../models/url.model';
-import { environment } from '../../environments/environment';
 import { DatePipe } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -19,7 +18,10 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class ShortenComponent implements OnInit, OnDestroy {
   shortUrl = signal('');
-  redirectUrl = environment.apiUrl + '/';
+  // Base URL for redirects (without /api)
+  redirectUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/'
+    : 'https://url-shortener-app-nrnh.vercel.app/';
   copyMessage = signal('');
   copyListMessage = signal('');
   urls = signal<Url[]>([]);
@@ -81,9 +83,9 @@ export class ShortenComponent implements OnInit, OnDestroy {
       this.urlService
         .shortenUrl(request)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe({
-          next: (response) => {
+        .subscribe({          next: (response) => {
             console.log('Response received:', response); // Debug log
+            // Store just the short code, not the full URL
             this.shortUrl.set(response.shortUrl);
             this.urlForm.reset();
             this.errorMsg.set('');
