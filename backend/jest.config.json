@@ -1,0 +1,16 @@
+{
+  "testEnvironment": "node",
+  "collectCoverageFrom": [
+    "**/*.{js,jsx}",
+    "!**/node_modules/**",
+    "!**/coverage/**",
+    "!**/tests/**",
+    "!jest.config.js",
+    "!**/vercel.json"
+  ],
+  "testMatch": [
+    "**/tests/**/*.test.js"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+  "testTimeout": 30000
+}

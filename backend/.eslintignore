@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+coverage/
+
+# Documentation files
+*.md
+README.md
+API_DOCS.md
+
+# Configuration files
+*.json
+package.json
+jest.config.json
+vercel.json
+
+# Environment files
+.env
+.env.*
+
+# Other files
+*.txt
+*.yml
+*.yaml
+*.log
+*.min.js

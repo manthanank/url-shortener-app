@@ -6,4 +6,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./shorten/shorten.component').then((m) => m.ShortenComponent),
   },
+  {
+    path: 'analytics',
+    loadComponent: () =>
+      import('./analytics/analytics.component').then((m) => m.AnalyticsComponent),
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

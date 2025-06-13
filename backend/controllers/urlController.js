@@ -1,89 +1,175 @@
 const Url = require('../models/urlModel');
+const UrlService = require('../services/urlService');
+const { ApiResponse, AppError } = require('../utils/response');
+const { isExpired } = require('../utils/urlUtils');
+const { HTTP_STATUS, ERROR_MESSAGES, SUCCESS_MESSAGES } = require('../constants');
 
-function generateUniqueId(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters[randomIndex];
-    }
-    return result;
-  }
+/**
+ * Create a short URL
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next function
+ */
+const createShortUrl = async (req, res, next) => {
+    try {
+        const { originalUrl, customShortUrl } = req.validatedData;
 
-const createShortUrl = async (req, res) => {
-    const { originalUrl } = req.body;
-    const shortUrl = generateUniqueId(5);
-    // check if originalUrl is valid url
-    const urlRegex = new RegExp(/^(http|https):\/\/[^ "]+$/);
-    if (!urlRegex.test(originalUrl))
-        return res.status(400).json('Invalid URL');
-    // check if originalUrl already exists in database
-    const url = await Url.findOne({
-        originalUrl
-    });
-    if (url) {
-        res.json(url);
-        return
-    }
-    // Set expiration date to 7 days from now
-    const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 7);
-    const newUrl = new Url({ originalUrl, shortUrl, expirationDate });
-    await newUrl.save();
-    res.json(newUrl);
-};
+        const { url, isNew } = await UrlService.findOrCreateUrl(originalUrl, customShortUrl);
 
-const redirectUrl = async (req, res) => {
-    const { shortUrl } = req.params;
-    const url = await Url.findOne({ shortUrl });
+        const message = isNew ? SUCCESS_MESSAGES.URL_CREATED : 'URL already exists';
+        const statusCode = isNew ? HTTP_STATUS.CREATED : HTTP_STATUS.OK;
 
-    if (!url || (url.expirationDate && url.expirationDate < new Date())) {
-        res.status(404).json('URL expired or not found');
-        return;
-    }
+        ApiResponse.success(message, url, statusCode).send(res);
 
-    url.clicks++;
-    await url.save();
-
-    if (url) {
-        res.redirect(url.originalUrl);
-    } else {
-        res.status(404).json('URL not found');
-    }
-};
-
-const getUrls = async (req, res) => {
-    try{
-        const urls = await Url.find({}).sort({ _id: -1 });
-        res.json(urls);
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        next(error);
     }
 };
 
-const getDetails = async (req, res) => {
+/**
+ * Redirect to original URL
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next function
+ */
+const redirectUrl = async (req, res, next) => {
     try {
         const { shortUrl } = req.params;
-        const url = await Url.findOne({ shortUrl });
-        if (url) {
-            res.json(url);
-        } else {
-            res.status(404).json('URL not found');
+
+        const url = await Url.findOne({ shortUrl, isActive: true });
+
+        if (!url) {
+            throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, HTTP_STATUS.NOT_FOUND);
         }
+
+        if (isExpired(url.expirationDate)) {
+            // Optionally deactivate expired URLs
+            url.isActive = false;
+            await url.save();
+            throw new AppError(ERROR_MESSAGES.URL_EXPIRED, HTTP_STATUS.NOT_FOUND);
+        }
+
+        // Increment click count and update last accessed time
+        await url.incrementClicks();
+
+        // Redirect to original URL
+        res.redirect(url.originalUrl);
+
     } catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+        if (error instanceof AppError) {
+            return ApiResponse.error(error.message, error.statusCode).send(res);
+        }
+        next(error);
     }
 };
 
-const deleteUrl = async (req, res) => {
+/**
+ * Get all URLs with pagination and filtering
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next function
+ */
+const getUrls = async (req, res, next) => {
+    try {
+        const result = await UrlService.getUrlsWithPagination(req.query);
+
+        ApiResponse.success(
+            SUCCESS_MESSAGES.URL_RETRIEVED,
+            result
+        ).send(res);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Get URL details by short URL
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next function
+ */
+const getDetails = async (req, res, next) => {
     try {
         const { shortUrl } = req.params;
-        await Url.findOneAndDelete({ shortUrl });
-        res.json('URL deleted');
-    }
-    catch (error) {
-        res.status(500).json({ message: 'Server Error' });
+
+        const url = await Url.findOne({ shortUrl });
+
+        if (!url) {
+            throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, HTTP_STATUS.NOT_FOUND);
+        }
+
+        // Add computed fields
+        const urlDetails = {
+            ...url.toJSON(),
+            isExpired: isExpired(url.expirationDate),
+            daysUntilExpiration: url.expirationDate ?
+                Math.ceil((url.expirationDate - new Date()) / (1000 * 60 * 60 * 24)) : null
+        };
+
+        ApiResponse.success(
+            SUCCESS_MESSAGES.URL_RETRIEVED,
+            urlDetails
+        ).send(res);
+
+    } catch (error) {
+        next(error);
     }
 };
 
-module.exports = { createShortUrl, redirectUrl, getDetails , getUrls, deleteUrl };
+/**
+ * Delete URL by short URL
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next function
+ */
+const deleteUrl = async (req, res, next) => {
+    try {
+        const { shortUrl } = req.params;
+
+        const deletedUrl = await Url.findOneAndDelete({ shortUrl });
+
+        if (!deletedUrl) {
+            throw new AppError(ERROR_MESSAGES.URL_NOT_FOUND, HTTP_STATUS.NOT_FOUND);
+        }
+
+        ApiResponse.success(
+            SUCCESS_MESSAGES.URL_DELETED,
+            { shortUrl }
+        ).send(res);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Get URL analytics
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next function
+ */
+const getAnalytics = async (req, res, next) => {
+    try {
+        const { shortUrl } = req.params;
+
+        const analytics = await UrlService.getUrlAnalytics(shortUrl);
+
+        ApiResponse.success(
+            'Analytics retrieved successfully',
+            analytics
+        ).send(res);
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = {
+    createShortUrl,
+    redirectUrl,
+    getUrls,
+    getDetails,
+    deleteUrl,
+    getAnalytics
+};
