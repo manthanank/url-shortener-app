@@ -2,38 +2,3 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
-
-/* Ensure footer sticks to bottom */
-html, body {
-  height: 100%;
-  background-color: #f9fafb; /* Light gray background */
-}
-
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Dark mode background */
-@media (prefers-color-scheme: dark) {
-  html, body {
-    background-color: #111827; /* Dark gray background */
-  }
-}
-
-/* Override for dark class */
-.dark html,
-.dark body {
-  background-color: #111827 !important;
-}
-
-#root, app-root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
