@@ -1,30 +1,26 @@
-import { Component, inject, OnInit, signal, OnDestroy } from '@angular/core';
-import { UrlService } from '../services/url.service';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Url, UrlsResponse, CreateUrlRequest } from '../models/url.model';
-import { DatePipe } from '@angular/common';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { CreateShortenedUrlRequest, ShortenedUrl, ShortenedUrlsResponse } from '../models/url.model';
+import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Url } from '../services/url';
 
 @Component({
   selector: 'app-shorten',
   imports: [DatePipe, ReactiveFormsModule],
-  templateUrl: './shorten.component.html',
-  styleUrl: './shorten.component.scss',
+  templateUrl: './shorten.html',
+  styleUrl: './shorten.css',
 })
-export class ShortenComponent implements OnInit, OnDestroy {
+export class Shorten implements OnInit, OnDestroy {
   shortUrl = signal('');
   // Base URL for redirects (without /api)
-  redirectUrl = window.location.hostname === 'localhost'
-    ? 'http://localhost:3000/'
-    : 'https://url-shortener-app-nrnh.vercel.app/';
+  redirectUrl =
+    window.location.hostname === 'localhost'
+      ? 'http://localhost:3000/'
+      : 'https://url-shortener-app-nrnh.vercel.app/';
   copyMessage = signal('');
   copyListMessage = signal('');
-  urls = signal<Url[]>([]);
+  urls = signal<ShortenedUrl[]>([]);
   pagination = signal({
     currentPage: 1,
     totalPages: 1,
@@ -37,7 +33,7 @@ export class ShortenComponent implements OnInit, OnDestroy {
   showDetailsModal = signal(false);
   urlToDelete = signal('');
   copyIndex = signal(-1);
-  selectedUrl = signal<Url>({} as Url);
+  selectedUrl = signal<ShortenedUrl>({} as ShortenedUrl);
   isLoading = signal(false);
   isListLoading = signal(false);
   error = signal('');
@@ -52,7 +48,7 @@ export class ShortenComponent implements OnInit, OnDestroy {
   urlForm: FormGroup = new FormGroup({});
   private unsubscribe$: Subject<void> = new Subject<void>();
 
-  urlService = inject(UrlService);
+  urlService = inject(Url);
 
   ngOnInit() {
     this.urlForm = new FormGroup({
@@ -70,20 +66,18 @@ export class ShortenComponent implements OnInit, OnDestroy {
   }
   shortenUrl() {
     if (this.urlForm.valid) {
-      const request: CreateUrlRequest = {
+      const request: CreateShortenedUrlRequest = {
         originalUrl: this.urlForm.value.originalUrl,
+        ...(this.urlForm.value.customShortUrl && { customShortUrl: this.urlForm.value.customShortUrl })
       };
-
-      if (this.urlForm.value.customShortUrl) {
-        request.customShortUrl = this.urlForm.value.customShortUrl;
-      }
 
       console.log('Submitting request:', request); // Debug log
 
       this.urlService
         .shortenUrl(request)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe({          next: (response) => {
+        .subscribe({
+          next: (response) => {
             console.log('Response received:', response); // Debug log
             // Store just the short code, not the full URL
             this.shortUrl.set(response.shortUrl);
@@ -118,7 +112,7 @@ export class ShortenComponent implements OnInit, OnDestroy {
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (response: UrlsResponse) => {
+        next: (response: ShortenedUrlsResponse) => {
           this.urls.set(response.urls);
           this.pagination.set(response.pagination);
           this.isListLoading.set(false);
@@ -247,7 +241,7 @@ export class ShortenComponent implements OnInit, OnDestroy {
 
   closeDetailsModal() {
     this.showDetailsModal.set(false);
-    this.selectedUrl.set({} as Url);
+    this.selectedUrl.set({} as ShortenedUrl);
   }
 
   closeDeleteModal() {
@@ -259,14 +253,14 @@ export class ShortenComponent implements OnInit, OnDestroy {
     return `${this.redirectUrl}${shortUrl}`;
   }
 
-  isUrlExpired(url: Url): boolean {
+  isUrlExpired(url: ShortenedUrl): boolean {
     return (
       url.isExpired ||
       (url.expirationDate ? new Date(url.expirationDate) < new Date() : false)
     );
   }
 
-  getDaysUntilExpiration(url: Url): number | null {
+  getDaysUntilExpiration(url: ShortenedUrl): number | null {
     if (!url.expirationDate) return null;
     const expirationDate = new Date(url.expirationDate);
     const now = new Date();

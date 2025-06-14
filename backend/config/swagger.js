@@ -14,7 +14,7 @@ const options = {
             },
             contact: {
                 name: 'API Support',
-                email: 'support@urlshortener.com',
+                email: 'manthan.ank46@gmail.com',
             },
         },
         servers: [

@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.scss']
+  imports: [ReactiveFormsModule],
+  templateUrl: './contact.html',
+  styleUrl: './contact.css',
 })
-export class ContactComponent {
+export class Contact {
   contactForm: FormGroup;
   isSubmitted = false;
   isSuccess = false;
@@ -19,7 +17,7 @@ export class ContactComponent {
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       subject: ['', [Validators.required, Validators.minLength(5)]],
-      message: ['', [Validators.required, Validators.minLength(10)]]
+      message: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
@@ -44,16 +42,24 @@ export class ContactComponent {
 
   getFieldError(fieldName: string): string {
     const field = this.contactForm.get(fieldName);
-    if (field && field.errors && (field.dirty || field.touched || this.isSubmitted)) {
+    if (
+      field &&
+      field.errors &&
+      (field.dirty || field.touched || this.isSubmitted)
+    ) {
       if (field.errors['required']) {
-        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+        return `${
+          fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+        } is required`;
       }
       if (field.errors['email']) {
         return 'Please enter a valid email address';
       }
       if (field.errors['minlength']) {
         const minLength = field.errors['minlength'].requiredLength;
-        return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} must be at least ${minLength} characters`;
+        return `${
+          fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+        } must be at least ${minLength} characters`;
       }
     }
     return '';
@@ -61,6 +67,10 @@ export class ContactComponent {
 
   hasFieldError(fieldName: string): boolean {
     const field = this.contactForm.get(fieldName);
-    return !!(field && field.errors && (field.dirty || field.touched || this.isSubmitted));
+    return !!(
+      field &&
+      field.errors &&
+      (field.dirty || field.touched || this.isSubmitted)
+    );
   }
 }

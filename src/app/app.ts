@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Meta } from '@angular/platform-browser';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { FooterComponent } from './shared/footer/footer.component';
+import { RouterOutlet } from '@angular/router';
+import { Header } from './shared/header/header';
+import { Footer } from './shared/footer/footer';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, FooterComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  imports: [RouterOutlet, Header, Footer],
+  templateUrl: './app.html',
+  styleUrl: './app.css',
 })
-export class AppComponent {
+export class App {
   meta = inject(Meta);
 
   constructor() {

@@ -1,15 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
-import { ThemeService } from '../../services/theme.service';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Theme } from '../../services/theme';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-header',
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+  templateUrl: './header.html',
+  styleUrl: './header.css'
 })
-export class NavbarComponent {
-  private themeService = inject(ThemeService);
+export class Header {
+   private themeService = inject(Theme);
   currentTheme = signal(localStorage.getItem('theme') || 'light');
   showMobileMenu = signal(false);
 

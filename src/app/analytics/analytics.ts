@@ -1,19 +1,19 @@
-import { Component, inject, OnInit, signal, OnDestroy } from '@angular/core';
-import { UrlService } from '../services/url.service';
-import { UrlAnalytics, SystemStats } from '../models/url.model';
+import { Component, inject, signal } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { ShortenedUrlAnalytics, SystemStats } from '../models/url.model';
+import { Url } from '../services/url';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-analytics',
   imports: [DatePipe, FormsModule],
-  templateUrl: './analytics.component.html',
-  styleUrl: './analytics.component.scss',
+  templateUrl: './analytics.html',
+  styleUrl: './analytics.css',
 })
-export class AnalyticsComponent implements OnInit, OnDestroy {
+export class Analytics {
   systemStats = signal<SystemStats | null>(null);
-  urlAnalytics = signal<UrlAnalytics | null>(null);
+  urlAnalytics = signal<ShortenedUrlAnalytics | null>(null);
   shortUrlInput = signal('');
   isLoading = signal(false);
   isStatsLoading = signal(false);
@@ -21,7 +21,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   statsError = signal('');
 
   private unsubscribe$: Subject<void> = new Subject<void>();
-  urlService = inject(UrlService);
+  urlService = inject(Url);
 
   ngOnInit() {
     this.loadSystemStats();
@@ -85,7 +85,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.loadSystemStats();
   }
 
-  getDaysUntilExpiration(analytics: UrlAnalytics): number | null {
+  getDaysUntilExpiration(analytics: ShortenedUrlAnalytics): number | null {
     if (!analytics.expirationDate) return null;
     const expirationDate = new Date(analytics.expirationDate);
     const now = new Date();

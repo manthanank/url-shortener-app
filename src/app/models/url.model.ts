@@ -1,60 +1,81 @@
-export type Urls = Url[]
-
-export interface Url {
-  id: string
-  originalUrl: string
-  shortUrl: string
-  fullShortUrl?: string  // Complete short URL for display
-  clicks: number
-  isActive: boolean
-  expirationDate: string
-  createdAt: string
-  updatedAt: string
-  lastAccessedAt?: string
-  isExpired?: boolean
-  daysUntilExpiration?: number
+/**
+ * Represents a shortened URL entity
+ */
+export interface ShortenedUrl {
+  readonly id: string;
+  readonly originalUrl: string;
+  readonly shortUrl: string;
+  readonly fullShortUrl?: string; // Complete short URL for display
+  readonly clicks: number;
+  readonly isActive: boolean;
+  readonly expirationDate: Date;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
+  readonly lastAccessedAt?: Date;
+  readonly isExpired?: boolean;
+  readonly daysUntilExpiration?: number;
 }
 
-export interface ApiResponse<T> {
-  success: boolean
-  message: string
-  data: T
-  timestamp: string
+/**
+ * Array type for multiple URL entities
+ */
+export type ShortenedUrlCollection = ShortenedUrl[];
+
+/**
+ * Generic API response wrapper
+ */
+export interface ApiResponse<T = unknown> {
+  readonly success: boolean;
+  readonly message: string;
+  readonly data: T;
+  readonly timestamp: Date;
 }
 
-export interface UrlsResponse {
-  urls: Url[]
-  pagination: {
-    currentPage: number
-    totalPages: number
-    totalCount: number
-    hasNextPage: boolean
-    hasPrevPage: boolean
-    limit: number
-  }
+/**
+ * Paginated response for URL collections
+ */
+export interface ShortenedUrlsResponse {
+  readonly urls: ShortenedUrl[];
+  readonly pagination: {
+    readonly currentPage: number;
+    readonly totalPages: number;
+    readonly totalCount: number;
+    readonly hasNextPage: boolean;
+    readonly hasPrevPage: boolean;
+    readonly limit: number;
+  };
 }
 
-export interface UrlAnalytics {
-  shortUrl: string
-  originalUrl: string
-  totalClicks: number
-  createdAt: string
-  lastAccessedAt?: string
-  isActive: boolean
-  isExpired: boolean
-  expirationDate: string
-  daysUntilExpiration?: number
+/**
+ * Analytics data for a specific URL
+ */
+export interface ShortenedUrlAnalytics {
+  readonly shortUrl: string;
+  readonly originalUrl: string;
+  readonly totalClicks: number;
+  readonly createdAt: Date;
+  readonly lastAccessedAt?: Date;
+  readonly isActive: boolean;
+  readonly isExpired: boolean;
+  readonly expirationDate: Date;
+  readonly daysUntilExpiration?: number;
 }
 
+/**
+ * System-wide statistics
+ */
 export interface SystemStats {
-  totalUrls: number
-  activeUrls: number
-  expiredUrls: number
-  totalClicks: number
-  urlsCreatedToday: number
+  readonly totalUrls: number;
+  readonly activeUrls: number;
+  readonly expiredUrls: number;
+  readonly totalClicks: number;
+  readonly urlsCreatedToday: number;
 }
 
-export interface CreateUrlRequest {
-  originalUrl: string
-  customShortUrl?: string
+/**
+ * Request payload for creating a new shortened URL
+ */
+export interface CreateShortenedUrlRequest {
+  readonly originalUrl: string;
+  readonly customShortUrl?: string;
 }

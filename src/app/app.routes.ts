@@ -4,32 +4,38 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./shorten/shorten.component').then((m) => m.ShortenComponent),
+      import('./shorten/shorten').then((m) => m.Shorten),
   },
   {
     path: 'analytics',
     loadComponent: () =>
-      import('./analytics/analytics.component').then((m) => m.AnalyticsComponent),
+      import('./analytics/analytics').then(
+        (m) => m.Analytics
+      ),
   },
   {
     path: 'privacy',
     loadComponent: () =>
-      import('./legal/privacy/privacy.component').then((m) => m.PrivacyComponent),
+      import('./legal/privacy/privacy').then(
+        (m) => m.Privacy
+      ),
   },
   {
     path: 'terms',
     loadComponent: () =>
-      import('./legal/terms/terms.component').then((m) => m.TermsComponent),
+      import('./legal/terms/terms').then((m) => m.Terms),
   },
   {
     path: 'cookies',
     loadComponent: () =>
-      import('./legal/cookies/cookies.component').then((m) => m.CookiesComponent),
+      import('./legal/cookies/cookies').then(
+        (m) => m.Cookies
+      ),
   },
   {
     path: 'contact',
     loadComponent: () =>
-      import('./contact/contact.component').then((m) => m.ContactComponent),
+      import('./contact/contact').then((m) => m.Contact),
   },
   {
     path: '**',

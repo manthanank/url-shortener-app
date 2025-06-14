@@ -4,7 +4,7 @@
 
 ```text
 Development: http://localhost:3000
-Production: https://your-domain.vercel.app
+Production: https://url-shortener-app-nrnh.vercel.app
 ```
 
 ## Authentication
