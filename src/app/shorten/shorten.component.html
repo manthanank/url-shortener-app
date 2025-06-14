@@ -1,47 +1,41 @@
-<div class="max-w-4xl mx-auto p-6 shadow-lg rounded-lg mt-6 bg-white dark:bg-gray-700 dark:text-white">
-  <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Shorten URL</h2>
+<div class="max-w-4xl mx-auto p-4 sm:p-6 shadow-lg rounded-lg mt-4 sm:mt-6 bg-white dark:bg-gray-700 dark:text-white">
+  <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-900 dark:text-white">Shorten URL</h2>
   <form [formGroup]="urlForm" (ngSubmit)="shortenUrl()" class="space-y-4">
     <div class="space-y-4">
       <div>
         <label for="originalUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Original URL <span class="text-red-500">*</span>
-        </label>
-        <input id="originalUrl"
-          class="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        </label>        <input id="originalUrl"
+          class="w-full p-3 text-sm sm:text-base border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           formControlName="originalUrl" placeholder="https://example.com/very/long/url" required />
       </div>
-      <div>
-        <label for="customShortUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <div>        <label for="customShortUrl" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Custom Short URL (optional)
-          <span class="text-xs text-gray-500 dark:text-gray-400 block sm:inline sm:ml-2">- Create your own memorable
-            link!</span>
-        </label>
-        <!-- Desktop and tablet layout -->
-        <div class="hidden sm:flex items-center">
+          <span class="text-xs text-gray-500 dark:text-gray-400 block mt-1">Create your own memorable link!</span>
+        </label>        <!-- Desktop and tablet layout -->
+        <div class="hidden md:flex items-center">
           <span
-            class="inline-flex items-center px-3 py-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-400 text-sm whitespace-nowrap overflow-hidden">
+            class="inline-flex items-center px-3 py-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-400 text-sm whitespace-nowrap overflow-hidden max-w-xs">
             {{ redirectUrl }}
           </span>
           <input id="customShortUrl"
-            class="flex-1 p-3 border border-gray-300 rounded-r-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            class="flex-1 p-3 text-sm sm:text-base border border-gray-300 rounded-r-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             formControlName="customShortUrl" placeholder="my-custom-link" />
         </div>
-        <!-- Mobile layout -->
-        <div class="sm:hidden space-y-2">
-          <div class="p-2 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg">
+        <!-- Mobile and small tablet layout -->
+        <div class="md:hidden space-y-2">
+          <div class="p-3 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg">
             <span class="text-sm text-gray-600 dark:text-gray-400 break-all">{{ redirectUrl }}</span>
           </div>
           <input id="customShortUrl"
-            class="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            class="w-full p-3 text-sm sm:text-base border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             formControlName="customShortUrl" placeholder="my-custom-link" />
         </div>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
           3-20 characters, alphanumeric only. Leave empty for auto-generated URL.
         </p>
-      </div>
-
-      <button
-        class="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      </div>      <button
+        class="w-full px-4 py-3 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         type="submit" [disabled]="urlForm.invalid">
         Shorten URL
       </button>
@@ -81,77 +75,79 @@
     <p class="text-red-700 dark:text-red-300">{{ errorMsg() }}</p>
   </div>
   }
-
   @if (shortUrl()) {
   <div class="p-4 bg-green-100 border border-green-300 rounded-lg mt-4 dark:bg-green-900 dark:border-green-700">
     <h3 class="font-semibold text-green-800 dark:text-green-200 mb-2">Success! Your URL has been shortened:</h3>
-    <div class="flex items-center space-x-2">
-      <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 font-mono break-all"
+    <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+      <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 font-mono break-all flex-1 text-sm sm:text-base"
         [href]="getFullShortUrl(shortUrl())" target="_blank" (click)="refreshData()">{{ getFullShortUrl(shortUrl())
         }}</a>
-      <button
-        class="px-3 py-1 bg-gray-200 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-500 dark:hover:bg-gray-700 transition-colors"
-        (click)="copyUrl(shortUrl())">
-        Copy
-      </button>
-      @if (copyMessage()) {
-      <span class="text-green-600 dark:text-green-400 text-sm">{{ copyMessage() }}</span>
-      }
+      <div class="flex items-center space-x-2">
+        <button
+          class="px-3 py-2 text-sm bg-gray-200 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-500 dark:hover:bg-gray-700 transition-colors whitespace-nowrap"
+          (click)="copyUrl(shortUrl())">
+          Copy
+        </button>
+        @if (copyMessage()) {
+        <span class="text-green-600 dark:text-green-400 text-sm">{{ copyMessage() }}</span>
+        }
+      </div>
     </div>
   </div>
   }
 </div>
 
-<div class="max-w-4xl mx-auto mt-6 mb-6 p-6 bg-white dark:bg-gray-700 dark:text-white rounded-lg shadow-lg">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">URL List</h2>
+<div class="max-w-4xl mx-auto mt-4 sm:mt-6 mb-4 sm:mb-6 p-4 sm:p-6 bg-white dark:bg-gray-700 dark:text-white rounded-lg shadow-lg">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 space-y-2 sm:space-y-0">
+    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">URL List</h2>
     <button
-      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
+      class="px-4 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors"
       (click)="refreshData()">
       Refresh
     </button>
   </div>
-
   <!-- Search and Filters -->
   <div class="mb-4 space-y-4">
-    <div class="flex flex-wrap gap-4">
-      <div class="flex-1 min-w-64"> <input type="text" placeholder="Search URLs..."
-          class="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500"
+    <div class="flex flex-col sm:flex-row gap-4">
+      <div class="flex-1 min-w-0">
+        <input type="text" placeholder="Search URLs..."
+          class="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white focus:ring-2 focus:ring-blue-500"
           [value]="searchTerm()" (input)="onSearchInput($event)" />
       </div>
       <div class="flex items-center space-x-2">
         <label class="flex items-center space-x-2">
           <input type="checkbox" [checked]="includeExpired()" (change)="toggleIncludeExpired()"
             class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-          <span class="text-sm">Include expired</span>
+          <span class="text-sm whitespace-nowrap">Include expired</span>
         </label>
       </div>
     </div>
 
-    <div class="flex flex-wrap gap-4 items-center">
-      <div class="flex items-center space-x-2">
-        <label class="text-sm font-medium">Sort by:</label>
-        <select class="p-2 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-          [value]="sortBy()" (change)="onSortByChange($event)">
-          <option value="createdAt">Created Date</option>
-          <option value="clicks">Clicks</option>
-          <option value="originalUrl">Original URL</option>
-        </select>
-        <select class="p-2 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white"
-          [value]="sortOrder()" (change)="onSortOrderChange($event)">
-          <option value="desc">Descending</option>
-          <option value="asc">Ascending</option>
-        </select>
+    <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+        <label class="text-sm font-medium whitespace-nowrap">Sort by:</label>
+        <div class="flex space-x-2">
+          <select class="p-2 text-sm border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+            [value]="sortBy()" (change)="onSortByChange($event)">
+            <option value="createdAt">Created Date</option>
+            <option value="clicks">Clicks</option>
+            <option value="originalUrl">Original URL</option>
+          </select>
+          <select class="p-2 text-sm border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+            [value]="sortOrder()" (change)="onSortOrderChange($event)">
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </select>
+        </div>
       </div>
 
-      <div class="flex items-center space-x-2">
-        <label class="text-sm font-medium">Per page:</label>
-        <select class="p-2 border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+      <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+        <label class="text-sm font-medium whitespace-nowrap">Per page:</label>
+        <select class="p-2 text-sm border border-gray-300 rounded-lg dark:bg-gray-600 dark:border-gray-500 dark:text-white"
           [value]="pageSize()" (change)="onPageSizeSelectChange($event)">
           <option value="5">5</option>
           <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
+          <option value="25">25</option>          <option value="50">50</option>
         </select>
       </div>
     </div>
@@ -176,38 +172,58 @@
   @else {
   @if (urls().length > 0) {
   <div class="space-y-4">
-    @for (url of urls(); track url.id) {
-    <div class="p-4 border border-gray-300 rounded-lg dark:border-gray-600 hover:shadow-md transition-shadow"
+    @for (url of urls(); track url.id) {    <div class="p-4 border border-gray-300 rounded-lg dark:border-gray-600 hover:shadow-md transition-shadow"
       [class.opacity-60]="isUrlExpired(url)" [class.border-red-300]="isUrlExpired(url)">
-      <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-2 lg:space-y-0">
-        <div class="flex-1 space-y-2">
-          <div class="flex items-center space-x-2">
-            <span class="font-medium text-sm text-gray-600 dark:text-gray-400">Short URL:</span>
-            <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 font-mono break-all"
-              [href]="getFullShortUrl(url.shortUrl)" target="_blank" (click)="refreshData()">
-              {{ getFullShortUrl(url.shortUrl) }}
-            </a>
-            @if (isUrlExpired(url)) {
-            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full dark:bg-red-900 dark:text-red-200">
-              Expired
-            </span>
-            }
-            @else if (!url.isActive) {
-            <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full dark:bg-gray-600 dark:text-gray-200">
-              Inactive
-            </span>
-            }
+      <div class="flex flex-col space-y-3">
+        <div class="flex flex-col space-y-2">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+            <div class="flex items-center space-x-2 flex-wrap">
+              <span class="font-medium text-sm text-gray-600 dark:text-gray-400">Short:</span>
+              <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 font-mono break-all text-sm sm:text-base"
+                [href]="getFullShortUrl(url.shortUrl)" target="_blank" (click)="refreshData()">
+                {{ getFullShortUrl(url.shortUrl) }}
+              </a>
+              @if (isUrlExpired(url)) {
+              <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full dark:bg-red-900 dark:text-red-200">
+                Expired
+              </span>
+              }
+              @else if (!url.isActive) {
+              <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full dark:bg-gray-600 dark:text-gray-200">
+                Inactive
+              </span>
+              }
+            </div>
+
+            <!-- Action buttons moved to top for mobile -->
+            <div class="flex flex-wrap gap-2 sm:hidden">
+              <button
+                class="px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800 transition-colors"
+                (click)="showDetails(url.shortUrl)">
+                Details
+              </button>
+              <button
+                class="px-3 py-1 text-xs bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 transition-colors"
+                (click)="copyListUrl(url.shortUrl, $index)">
+                {{ copyIndex() === $index && copyListMessage() ? copyListMessage() : 'Copy' }}
+              </button>
+              <button
+                class="px-3 py-1 text-xs bg-red-100 text-red-800 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-200 dark:hover:bg-red-800 transition-colors"
+                (click)="prepareDelete(url.shortUrl)">
+                Delete
+              </button>
+            </div>
           </div>
 
-          <div class="flex items-center space-x-2">
-            <span class="font-medium text-sm text-gray-600 dark:text-gray-400">Original:</span>
-            <a class="text-gray-800 dark:text-gray-200 break-all hover:text-blue-600 dark:hover:text-blue-400"
+          <div class="flex items-start space-x-2">
+            <span class="font-medium text-sm text-gray-600 dark:text-gray-400 shrink-0">Original:</span>
+            <a class="text-gray-800 dark:text-gray-200 break-all hover:text-blue-600 dark:hover:text-blue-400 text-sm sm:text-base"
               [href]="url.originalUrl" target="_blank">
               {{ url.originalUrl }}
             </a>
           </div>
 
-          <div class="flex flex-wrap items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             <span>Clicks: <strong class="text-green-600 dark:text-green-400">{{ url.clicks }}</strong></span>
             <span>Created: {{ url.createdAt | date: 'short' }}</span>
             @if (url.expirationDate) {
@@ -221,7 +237,8 @@
           </div>
         </div>
 
-        <div class="flex space-x-2">
+        <!-- Action buttons for desktop -->
+        <div class="hidden sm:flex space-x-2 justify-end">
           <button
             class="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800 transition-colors"
             (click)="showDetails(url.shortUrl)">
@@ -242,41 +259,60 @@
     </div>
     }
   </div>
-
   <!-- Pagination -->
   @if (pagination().totalPages > 1) {
-  <div class="mt-6 flex justify-between items-center">
-    <div class="text-sm text-gray-600 dark:text-gray-400">
+  <div class="mt-6 flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+    <div class="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
       Showing {{ ((pagination().currentPage - 1) * pagination().limit) + 1 }} to
       {{ Math.min(pagination().currentPage * pagination().limit, pagination().totalCount) }} of
       {{ pagination().totalCount }} results
     </div>
 
-    <div class="flex space-x-2">
-      <button
-        class="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="!pagination().hasPrevPage" (click)="onPageChange(pagination().currentPage - 1)">
-        Previous
-      </button>
+    <div class="flex justify-center sm:justify-end">
+      <!-- Mobile pagination: Previous/Next only -->
+      <div class="flex sm:hidden space-x-2">
+        <button
+          class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!pagination().hasPrevPage" (click)="onPageChange(pagination().currentPage - 1)">
+          Previous
+        </button>
+        <span class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
+          {{ pagination().currentPage }} / {{ pagination().totalPages }}
+        </span>
+        <button
+          class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!pagination().hasNextPage" (click)="onPageChange(pagination().currentPage + 1)">
+          Next
+        </button>
+      </div>
 
-      @for (page of [].constructor(pagination().totalPages); track $index) {
-      <button class="px-3 py-1 rounded-lg transition-colors"
-        [class.bg-blue-600]="$index + 1 === pagination().currentPage"
-        [class.text-white]="$index + 1 === pagination().currentPage"
-        [class.bg-gray-100]="$index + 1 !== pagination().currentPage"
-        [class.text-gray-800]="$index + 1 !== pagination().currentPage"
-        [class.dark:bg-blue-700]="$index + 1 === pagination().currentPage"
-        [class.dark:bg-gray-600]="$index + 1 !== pagination().currentPage"
-        [class.dark:text-gray-200]="$index + 1 !== pagination().currentPage" (click)="onPageChange($index + 1)">
-        {{ $index + 1 }}
-      </button>
-      }
+      <!-- Desktop pagination: Full page numbers -->
+      <div class="hidden sm:flex space-x-2">
+        <button
+          class="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!pagination().hasPrevPage" (click)="onPageChange(pagination().currentPage - 1)">
+          Previous
+        </button>
 
-      <button
-        class="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-        [disabled]="!pagination().hasNextPage" (click)="onPageChange(pagination().currentPage + 1)">
-        Next
-      </button>
+        @for (page of [].constructor(pagination().totalPages); track $index) {
+        <button class="px-3 py-1 rounded-lg transition-colors"
+          [class.bg-blue-600]="$index + 1 === pagination().currentPage"
+          [class.text-white]="$index + 1 === pagination().currentPage"
+          [class.bg-gray-100]="$index + 1 !== pagination().currentPage"
+          [class.text-gray-800]="$index + 1 !== pagination().currentPage"
+          [class.dark:bg-blue-700]="$index + 1 === pagination().currentPage"
+          [class.dark:bg-gray-600]="$index + 1 !== pagination().currentPage"
+          [class.dark:text-gray-200]="$index + 1 !== pagination().currentPage" (click)="onPageChange($index + 1)">
+          {{ $index + 1 }}
+        </button>
+        }
+
+        <button
+          class="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!pagination().hasNextPage" (click)="onPageChange(pagination().currentPage + 1)">
+          Next
+        </button>
+      </div>
     </div>
   </div>
   }
@@ -296,18 +332,18 @@
 </div>
 
 @if (showDeleteModal()) {
-<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg dark:bg-gray-800 dark:text-white max-w-md mx-4">
-    <h3 class="text-xl font-bold mb-4">Confirm Deletion</h3>
-    <p class="mb-6">Are you sure you want to delete this URL? This action cannot be undone.</p>
-    <div class="flex space-x-4">
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
+  <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg dark:bg-gray-800 dark:text-white max-w-md w-full mx-4">
+    <h3 class="text-lg sm:text-xl font-bold mb-4">Confirm Deletion</h3>
+    <p class="mb-6 text-sm sm:text-base">Are you sure you want to delete this URL? This action cannot be undone.</p>
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
       <button
-        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 transition-colors"
+        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 transition-colors text-sm sm:text-base"
         (click)="confirmDelete()">
         Yes, Delete
       </button>
       <button
-        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors"
+        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors text-sm sm:text-base"
         (click)="closeDeleteModal()">
         Cancel
       </button>
@@ -317,27 +353,27 @@
 }
 
 @if (showDetailsModal()) {
-<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
   <div
-    class="bg-white p-6 rounded-lg shadow-lg dark:bg-gray-800 dark:text-white max-w-2xl mx-4 max-h-96 overflow-y-auto">
-    <h3 class="text-xl font-bold mb-4">URL Details</h3>
+    class="bg-white p-4 sm:p-6 rounded-lg shadow-lg dark:bg-gray-800 dark:text-white max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <h3 class="text-lg sm:text-xl font-bold mb-4">URL Details</h3>
     @if (isLoading()) {
     <div class="text-center p-4">
       <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-      <p class="mt-2">Loading details...</p>
+      <p class="mt-2 text-sm sm:text-base">Loading details...</p>
     </div>
     }
     @else {
     <div class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Short URL</label>
-        <div class="flex items-center space-x-2">
-          <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 font-mono break-all"
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+          <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 font-mono break-all text-sm sm:text-base flex-1"
             [href]="getFullShortUrl(selectedUrl().shortUrl)" target="_blank">
             {{ getFullShortUrl(selectedUrl().shortUrl) }}
           </a>
           <button
-            class="px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 text-xs"
+            class="px-2 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 text-xs sm:text-sm whitespace-nowrap"
             (click)="copyUrl(selectedUrl().shortUrl)">
             Copy
           </button>
@@ -346,16 +382,16 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Original URL</label>
-        <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 break-all"
+        <a class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 break-all text-sm sm:text-base"
           [href]="selectedUrl().originalUrl" target="_blank">
           {{ selectedUrl().originalUrl }}
         </a>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Clicks</label>
-          <span class="text-2xl font-bold text-green-600 dark:text-green-400">{{ selectedUrl().clicks }}</span>
+          <span class="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">{{ selectedUrl().clicks }}</span>
         </div>
 
         <div>
@@ -382,23 +418,23 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Created</label>
-          <p class="text-gray-900 dark:text-gray-100">{{ selectedUrl().createdAt | date: 'medium' }}</p>
+          <p class="text-gray-900 dark:text-gray-100 text-sm sm:text-base">{{ selectedUrl().createdAt | date: 'medium' }}</p>
         </div>
 
         @if (selectedUrl().lastAccessedAt) {
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Last Accessed</label>
-          <p class="text-gray-900 dark:text-gray-100">{{ selectedUrl().lastAccessedAt | date: 'medium' }}</p>
+          <p class="text-gray-900 dark:text-gray-100 text-sm sm:text-base">{{ selectedUrl().lastAccessedAt | date: 'medium' }}</p>
         </div>
         }
 
         @if (selectedUrl().expirationDate) {
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expires</label>
-          <p class="text-gray-900 dark:text-gray-100">
+          <p class="text-gray-900 dark:text-gray-100 text-sm sm:text-base">
             {{ selectedUrl().expirationDate | date: 'medium' }}
             @if (!isUrlExpired(selectedUrl()) && getDaysUntilExpiration(selectedUrl()) !== null) {
-            <span class="text-sm text-gray-500 dark:text-gray-400">
+            <span class="text-sm text-gray-500 dark:text-gray-400 block sm:inline">
               ({{ getDaysUntilExpiration(selectedUrl()) }} days remaining)
             </span>
             }
@@ -409,7 +445,7 @@
         @if (selectedUrl().updatedAt) {
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Updated</label>
-          <p class="text-gray-900 dark:text-gray-100">{{ selectedUrl().updatedAt | date: 'medium' }}</p>
+          <p class="text-gray-900 dark:text-gray-100 text-sm sm:text-base">{{ selectedUrl().updatedAt | date: 'medium' }}</p>
         </div>
         }
       </div>
@@ -417,7 +453,7 @@
 
     <div class="mt-6 flex justify-end">
       <button
-        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors"
+        class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 transition-colors text-sm sm:text-base"
         (click)="closeDetailsModal()">
         Close
       </button>
