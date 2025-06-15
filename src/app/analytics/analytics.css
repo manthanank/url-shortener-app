@@ -1,0 +1,235 @@
+/* Mobile-first responsive design for analytics page */
+
+/* Smooth scrolling for better mobile experience */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure proper text wrapping on mobile */
+.break-all {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* Better touch scrolling on mobile */
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 640px) {
+  button {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    min-width: 44px;
+  }
+
+  input {
+    min-height: 44px;
+  }
+
+  /* Better spacing for mobile stats cards */
+  .stats-card {
+    padding: 12px;
+  }
+
+  /* Improve readability of long URLs on mobile */
+  .url-display {
+    word-break: break-all;
+    line-height: 1.4;
+    font-size: 14px;
+  }
+
+  /* Stack elements vertically on very small screens */
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .mobile-stack > * {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  .mobile-stack > *:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Prevent horizontal scrolling */
+  .container {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Better input styling for mobile */
+  input[type="text"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 12px;
+  }
+}
+
+/* Tablet improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Optimize for tablet landscape/portrait */
+  .tablet-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .tablet-cols-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Loading spinner improvements */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Better focus states for accessibility */
+input:focus,
+button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Placeholder styling for better visual hierarchy */
+input::placeholder {
+  color: #9ca3af; /* Gray-400 for light mode */
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+input:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* Dark mode placeholder styling */
+.dark input::placeholder {
+  color: #6b7280; /* Gray-500 for dark mode */
+  opacity: 0.8;
+}
+
+.dark input:focus::placeholder {
+  opacity: 0.6;
+}
+
+/* Responsive placeholder text size */
+@media (max-width: 640px) {
+  input::placeholder {
+    font-size: 14px;
+  }
+}
+
+/* Improve contrast for dark mode */
+@media (prefers-color-scheme: dark) {
+  .dark-text-contrast {
+    color: #f3f4f6 !important;
+  }
+
+  .dark-border-contrast {
+    border-color: #374151 !important;
+  }
+}
+
+/* Responsive grid improvements */
+.responsive-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-grid.five-cols {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Ensure cards don't become too narrow */
+.stat-card {
+  min-width: 0; /* Allow flex items to shrink */
+  flex: 1;
+}
+
+/* Better spacing for mobile */
+@media (max-width: 640px) {
+  .mobile-spacing-sm {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .mobile-spacing-md {
+    margin-bottom: 1rem !important;
+  }
+
+  .mobile-padding-sm {
+    padding: 0.75rem !important;
+  }
+
+  .mobile-text-sm {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Improve button grouping on mobile */
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+}
+
+/* Status badge improvements */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Responsive text sizing */
+@media (max-width: 640px) {
+  .responsive-text-lg {
+    font-size: 1.125rem !important; /* 18px */
+  }
+
+  .responsive-text-xl {
+    font-size: 1.25rem !important; /* 20px */
+  }
+
+  .responsive-text-2xl {
+    font-size: 1.5rem !important; /* 24px */
+  }
+
+  .responsive-text-3xl {
+    font-size: 1.875rem !important; /* 30px */
+  }
+}
