@@ -3,5 +3,9 @@
   <main class="flex-1 pt-20">
     <router-outlet></router-outlet>
   </main>
-  <app-footer></app-footer>
+  <app-footer
+    [visitorCount]="visitorCount()"
+    [isVisitorCountLoading]="isVisitorCountLoading()"
+    [visitorCountError]="visitorCountError()">
+  </app-footer>
 </div>

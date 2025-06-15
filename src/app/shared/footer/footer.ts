@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,4 +9,8 @@ import { RouterLink } from '@angular/router';
 })
 export class Footer {
   currentYear = new Date().getFullYear();
+
+  @Input() visitorCount: number = 0;
+  @Input() isVisitorCountLoading: boolean = false;
+  @Input() visitorCountError: string | null = null;
 }
