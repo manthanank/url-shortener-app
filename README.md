@@ -1,6 +1,6 @@
 # URL Shortener App
 
-A modern, full-featured URL shortener application built with Angular 20, Node.js, Express.js, MongoDB Atlas, and styled with Tailwind CSS 4. Features a robust backend API, comprehensive analytics, and modern UI components.
+A modern, full-featured URL shortener application built with Angular 20, Node.js, Express.js, MongoDB Atlas, and styled with Tailwind CSS 4. Features a robust backend API, comprehensive analytics, contact management, admin dashboard, and modern UI components with legal compliance pages.
 
 ## Table of Contents
 
@@ -11,6 +11,9 @@ A modern, full-featured URL shortener application built with Angular 20, Node.js
 - [API Documentation](#api-documentation)
 - [Production](#production)
 - [System Architecture](#system-architecture)
+- [Contributing](#contributing)
+- [Support](#support)
+- [Changelog](#changelog)
 - [License](#license)
 
 ## Features
@@ -22,6 +25,8 @@ A modern, full-featured URL shortener application built with Angular 20, Node.js
 - ✅ **Analytics Dashboard**: Comprehensive statistics and click analytics
 - ✅ **Bulk Operations**: Support for bulk URL management
 - ✅ **Custom Expiration**: Set custom expiration dates for URLs
+- ✅ **Contact Management**: Contact form with admin dashboard for inquiries
+- ✅ **Legal Compliance**: Privacy policy, terms of service, and cookie policy pages
 
 ### User Experience
 
@@ -30,6 +35,7 @@ A modern, full-featured URL shortener application built with Angular 20, Node.js
 - ✅ **Copy to Clipboard**: One-click copying of shortened URLs
 - ✅ **Real-time Updates**: Live analytics and status updates
 - ✅ **Mobile Responsive**: Optimized for all device sizes
+- ✅ **Lazy Loading**: Route-based code splitting for optimal performance
 
 ### Security & Performance
 
@@ -45,15 +51,18 @@ A modern, full-featured URL shortener application built with Angular 20, Node.js
 - ✅ **Analytics Insights**: Detailed click statistics and trends
 - ✅ **Bulk Export**: Export URL data and analytics
 - ✅ **Health Monitoring**: API health checks and status monitoring
+- ✅ **Contact Administration**: Manage and respond to user inquiries
+- ✅ **Content Management**: Legal pages and policy management
 
 ## Technology Stack
 
 ### Frontend
 
-- **Angular**: 20.0.0 (Latest stable)
+- **Angular**: 20.0.3 (Latest stable with standalone components)
 - **TailwindCSS**: 4.1.10 (Utility-first CSS framework)
-- **TypeScript**: 5.8.2
-- **RxJS**: 7.8.0 (Reactive programming)
+- **TypeScript**: 5.8.3
+- **RxJS**: 7.8.2 (Reactive programming)
+- **Angular CLI**: 20.0.2 (Build system)
 
 ### Backend
 
@@ -61,13 +70,17 @@ A modern, full-featured URL shortener application built with Angular 20, Node.js
 - **Express.js**: 4.19.2
 - **MongoDB**: Atlas (Cloud database)
 - **Mongoose**: 8.5.1 (ODM)
+- **Swagger**: API documentation with UI
+- **Jest**: 29.7.0 (Testing framework)
 
 ### Development & Deployment
 
-- **Angular CLI**: 20.0.0
+- **Angular CLI**: 20.0.2
 - **Jest**: 29.7.0 (Testing framework)
 - **Vercel**: Serverless deployment platform
 - **Swagger**: API documentation
+- **ESLint**: Code linting and formatting
+- **Nodemon**: Development server with hot reload
 
 ## Installation
 
@@ -170,6 +183,17 @@ The application will be available at:
 - **Custom Expiration**: Set expiration dates for temporary URLs
 - **Theme Toggle**: Switch between light and dark modes
 - **Responsive Design**: Use on mobile, tablet, or desktop devices
+- **Contact Form**: User inquiry submission and management
+- **Legal Pages**: Privacy policy, terms of service, and cookie policy
+- **Admin Dashboard**: Administrative interface for contact management
+
+### Additional Pages
+
+- **Contact**: `/contact` - Submit inquiries and feedback
+- **Privacy Policy**: `/privacy` - Data privacy and protection information
+- **Terms of Service**: `/terms` - Terms and conditions of use
+- **Cookie Policy**: `/cookies` - Cookie usage and preferences
+- **Admin Contacts**: `/admin/contacts` - Administrative contact management
 
 ## API Documentation
 
@@ -182,6 +206,8 @@ The backend provides a comprehensive REST API with the following endpoints:
 - `GET /api/urls/:shortUrl` - Get URL details and analytics
 - `DELETE /api/urls/:shortUrl` - Delete a short URL
 - `GET /api/analytics` - Get comprehensive analytics
+- `POST /api/contact` - Submit contact form
+- `GET /api/admin/contacts` - Get all contact submissions (Admin)
 
 ### API Features
 
@@ -287,15 +313,20 @@ For support and questions:
 
 ### Version 2.0.0 (Current)
 
-- ✅ Upgraded to Angular 20
-- ✅ Updated to Tailwind CSS 4
+- ✅ Upgraded to Angular 20.0.3
+- ✅ Updated to Tailwind CSS 4.1.10
 - ✅ Enhanced analytics dashboard
 - ✅ Improved security with rate limiting
 - ✅ Added bulk operations
 - ✅ Serverless deployment optimization
 - ✅ Comprehensive API documentation
 - ✅ Added system architecture documentation
+- ✅ Contact form with admin management system
+- ✅ Legal compliance pages (Privacy, Terms, Cookies)
+- ✅ Standalone Angular components with lazy loading
+- ✅ Enhanced testing with Jest integration
+- ✅ ESLint configuration for code quality
 
 ---
 
-*Built with ❤️ using Angular, Node.js, and MongoDB*
+Built with ❤️ using Angular, Node.js, and MongoDB

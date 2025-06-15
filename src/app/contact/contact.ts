@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Contacts } from '../services/contacts';
-import { ContactRequest } from '../models/contact,model';
+import { ContactRequest } from '../models/contact.model';
 
 @Component({
   selector: 'app-contact',

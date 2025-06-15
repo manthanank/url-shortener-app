@@ -29,6 +29,43 @@ const urlSchema = joi.object({
         })
 });
 
+const contactSchema = joi.object({
+    name: joi.string()
+        .trim()
+        .min(2)
+        .max(100)
+        .required()
+        .messages({
+            'string.empty': 'Name is required',
+            'string.min': 'Name must be at least 2 characters long',
+            'string.max': 'Name cannot exceed 100 characters',
+            'any.required': 'Name is required'
+        }),
+
+    email: joi.string()
+        .email()
+        .trim()
+        .lowercase()
+        .required()
+        .messages({
+            'string.empty': 'Email is required',
+            'string.email': 'Please provide a valid email address',
+            'any.required': 'Email is required'
+        }),
+
+    message: joi.string()
+        .trim()
+        .min(10)
+        .max(1000)
+        .required()
+        .messages({
+            'string.empty': 'Message is required',
+            'string.min': 'Message must be at least 10 characters long',
+            'string.max': 'Message cannot exceed 1000 characters',
+            'any.required': 'Message is required'
+        })
+});
+
 const validateCreateUrl = (req, res, next) => {
     const { error, value } = urlSchema.validate(req.body, { abortEarly: false });
 
@@ -58,7 +95,24 @@ const validateShortUrl = (req, res, next) => {
     next();
 };
 
+const validateContact = (req, res, next) => {
+    const { error, value } = contactSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        const errors = error.details.map(detail => detail.message);
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+            success: false,
+            message: 'Validation failed',
+            errors
+        });
+    }
+
+    req.validatedData = value;
+    next();
+};
+
 module.exports = {
     validateCreateUrl,
-    validateShortUrl
+    validateShortUrl,
+    validateContact
 };

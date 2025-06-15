@@ -38,6 +38,11 @@ export const routes: Routes = [
       import('./contact/contact').then((m) => m.Contact),
   },
   {
+    path: 'admin/contacts',
+    loadComponent: () =>
+      import('./admin-contacts/admin-contacts.component').then((m) => m.AdminContactsComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

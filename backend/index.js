@@ -2,6 +2,7 @@ const express = require('express');
 const connectDatabase = require('./config/database');
 const urlRoutes = require('./routes/urlRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 const SchedulerService = require('./services/schedulerService');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { securityMiddleware } = require('./middleware/security');
@@ -73,6 +74,7 @@ app.get('/health', (req, res) => {
 
 // API routes (non-redirect endpoints)
 app.use('/api', urlRoutes);
+app.use('/api/contacts', contactRoutes);
 app.use('/admin', adminRoutes);
 
 // Direct redirect routes (should be after API routes to avoid conflicts)
