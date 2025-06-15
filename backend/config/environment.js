@@ -29,6 +29,19 @@ const config = {
         url: process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production'
             ? 'https://shortener-url-app.vercel.app'
             : 'http://localhost:4200')
+    },
+
+    email: {
+        service: process.env.EMAIL_SERVICE || 'gmail',
+        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.EMAIL_PORT) || 587,
+        secure: process.env.EMAIL_SECURE === 'true' || false,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+        },
+        from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
+        to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER
     }
 };
 

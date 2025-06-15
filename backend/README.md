@@ -7,6 +7,8 @@ A robust and scalable URL shortener backend service built with Node.js, Express,
 - ✅ **URL Shortening**: Create short URLs with custom or auto-generated identifiers
 - ✅ **URL Redirection**: Fast redirection to original URLs with click tracking
 - ✅ **Analytics**: Track clicks and access patterns
+- ✅ **Contact System**: Contact form with email notifications
+- ✅ **Email Notifications**: Automatic admin notifications and user auto-replies
 - ✅ **Expiration**: Automatic URL expiration with configurable timeframes
 - ✅ **Rate Limiting**: Protection against abuse with configurable limits
 - ✅ **Security**: Helmet, CORS, compression, and input validation
@@ -21,6 +23,7 @@ A robust and scalable URL shortener backend service built with Node.js, Express,
 - **Framework**: Express.js
 - **Database**: MongoDB
 - **ODM**: Mongoose
+- **Email**: Nodemailer
 - **Validation**: Joi
 - **Security**: Helmet, express-rate-limit
 - **Testing**: Jest, Supertest
@@ -86,7 +89,15 @@ backend/
    MONGODB_PASSWORD=your_password
    MONGODB_CLUSTER=your_cluster
    MONGODB_DATABASE=url-shortener-app
+   
+   # Email Configuration (Optional)
+   EMAIL_SERVICE=gmail
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASSWORD=your_app_password
+   ADMIN_EMAIL=admin@example.com
    ```
+
+   > **Email Setup**: For detailed email configuration instructions, see [EMAIL_SETUP.md](./EMAIL_SETUP.md)
 
 4. **Start the server**
 

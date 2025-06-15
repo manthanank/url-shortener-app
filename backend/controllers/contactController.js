@@ -1,4 +1,5 @@
 const Contact = require('../models/contactModel');
+const emailService = require('../services/emailService');
 
 /**
  * Submit a new contact message
@@ -21,6 +22,19 @@ const submitContact = async (req, res, next) => {
         });
 
         await contact.save();
+
+        // Send email notifications
+        try {
+            // Send notification to admin
+            await emailService.sendContactNotification(contact);
+
+            // Send auto-reply to user
+            await emailService.sendAutoReply(contact);
+        } catch (emailError) {
+            // Log email error but don't fail the contact submission
+            // eslint-disable-next-line no-console
+            console.error('Email notification failed:', emailError.message);
+        }
 
         res.status(201).json({
             success: true,

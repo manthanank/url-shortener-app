@@ -1,6 +1,7 @@
 const express = require('express');
 const UrlService = require('../services/urlService');
 const SchedulerService = require('../services/schedulerService');
+const emailService = require('../services/emailService');
 const { ApiResponse } = require('../utils/response');
 const { generalLimiter } = require('../middleware/security');
 
@@ -73,6 +74,82 @@ router.get('/health', async (req, res, next) => {
         };
 
         ApiResponse.success('System health check', healthData).send(res);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /admin/email/test:
+ *   post:
+ *     summary: Send a test email
+ *     description: Sends a test email to the configured admin email address
+ *     tags: [Admin]
+ *     responses:
+ *       200:
+ *         description: Test email sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: string
+ *                       example: 'Test email sent successfully'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+/**
+ * Send a test email
+ */
+router.post('/email/test', async (req, res, next) => {
+    try {
+        await emailService.sendTestEmail();
+        ApiResponse.success('Test email sent successfully').send(res);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /admin/test-email:
+ *   post:
+ *     summary: Test email functionality
+ *     description: Test email configuration and send a test email
+ *     tags: [Admin]
+ *     responses:
+ *       200:
+ *         description: Email test completed
+ */
+router.post('/test-email', async (req, res, next) => {
+    try {
+        const testResult = await emailService.testConnection();
+
+        if (testResult.success) {
+            // Send a test email
+            const testContact = {
+                name: 'Test User',
+                email: 'test@example.com',
+                message: 'This is a test message to verify email functionality.',
+                ip: '127.0.0.1',
+                userAgent: 'Test Agent',
+                _id: 'test_id_' + Date.now()
+            };
+
+            const notificationSent = await emailService.sendContactNotification(testContact);
+
+            ApiResponse.success('Email test completed', {
+                connection: testResult,
+                notificationSent,
+                message: notificationSent ? 'Test email sent successfully' : 'Email connection works but notification failed'
+            }).send(res);
+        } else {
+            ApiResponse.error('Email connection failed', 500, [testResult.message]).send(res);
+        }
     } catch (error) {
         next(error);
     }
