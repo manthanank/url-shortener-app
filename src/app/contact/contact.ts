@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Contacts } from '../services/contacts';
+import { ContactRequest } from '../models/contact,model';
 
 @Component({
   selector: 'app-contact',
@@ -11,32 +13,55 @@ export class Contact {
   contactForm: FormGroup;
   isSubmitted = false;
   isSuccess = false;
+  isLoading = false;
+  errorMessage = '';
+
+  private contacts = inject(Contacts);
 
   constructor(private fb: FormBuilder) {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      subject: ['', [Validators.required, Validators.minLength(5)]],
       message: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
-
   onSubmit() {
     this.isSubmitted = true;
 
     if (this.contactForm.valid) {
-      // In a real application, you would send this data to your backend
-      console.log('Contact form submitted:', this.contactForm.value);
+      this.isLoading = true;
+      this.errorMessage = '';
 
-      // Simulate successful submission
-      this.isSuccess = true;
-      this.contactForm.reset();
-      this.isSubmitted = false;
+      const contactData: ContactRequest = {
+        name: this.contactForm.value.name,
+        email: this.contactForm.value.email,
+        message: this.contactForm.value.message,
+      };
 
-      // Hide success message after 5 seconds
-      setTimeout(() => {
-        this.isSuccess = false;
-      }, 5000);
+      this.contacts.sendMessage(contactData).subscribe({
+        next: (response) => {
+          console.log('Contact form submitted successfully:', response);
+          this.isSuccess = true;
+          this.contactForm.reset();
+          this.isSubmitted = false;
+          this.isLoading = false;
+
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            this.isSuccess = false;
+          }, 5000);
+        },
+        error: (error) => {
+          console.error('Error submitting contact form:', error);
+          this.isLoading = false;
+          this.errorMessage = error?.error?.message || 'Failed to send message. Please try again.';
+
+          // Hide error message after 5 seconds
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 5000);
+        },
+      });
     }
   }
 
